@@ -1,0 +1,1384 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin – NAMM GLOBAL</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: { red: "#D62828", gold: "#E8A020", dark: "#1A1A2E" },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .admin-sidebar {
+        width: 240px;
+        flex-shrink: 0;
+      }
+      .admin-nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        color: #5c5c6e;
+      }
+      .admin-nav-item:hover {
+        background: #fff5f5;
+        color: #d62828;
+      }
+      .admin-nav-item.active {
+        background: #d62828;
+        color: white;
+      }
+      .admin-section {
+        display: none;
+      }
+      .admin-section.active {
+        display: block;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .table-row:hover {
+        background: #fefcf8;
+      }
+      .auth-bg {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #2d1b1b 50%,
+          #1a1a2e 100%
+        );
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body style="padding-top: 0; background: #f5f0e8">
+    <!-- ══ AUTH SCREENS (shown before admin panel) ══════════════ -->
+    <div id="adminAuthScreen"><!-- injected by JS --></div>
+
+    <!-- ══ ADMIN PANEL (hidden until logged in) ═════════════════ -->
+    <div id="adminPanel" class="hidden min-h-screen flex">
+      <!-- Sidebar -->
+      <aside
+        class="admin-sidebar flex flex-col p-4 shadow-xl"
+        style="background: #1a1a2e; min-height: 100vh"
+      >
+        <!-- Logo -->
+        <div class="flex items-center gap-3 px-2 py-4 mb-6">
+          <div
+            class="w-9 h-9 rounded-xl flex items-center justify-center text-white font-bold text-sm"
+            style="background: linear-gradient(135deg, #d62828, #e8a020)"
+          >
+            NG
+          </div>
+          <div>
+            <div
+              class="font-black text-white text-sm"
+              style="font-family: &quot;Syne&quot;, sans-serif"
+            >
+              NAMM GLOBAL
+            </div>
+            <div class="text-xs" style="color: rgba(255, 255, 255, 0.4)">
+              Administration
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="flex-1 space-y-1">
+          <div class="admin-nav-item active" onclick="showSection('dashboard')">
+            📊 Tableau de bord
+          </div>
+          <div class="admin-nav-item" onclick="showSection('orders')">
+            📦 Commandes
+            <span
+              id="pendingBadge"
+              class="ml-auto badge"
+              style="background: #d62828; color: white; display: none"
+            ></span>
+          </div>
+          <div class="admin-nav-item" onclick="showSection('waves')">
+            🌊 Vagues
+          </div>
+          <div class="admin-nav-item" onclick="showSection('gallery')">
+            🖼️ Galerie
+          </div>
+          <div class="admin-nav-item" onclick="showSection('pricing')">
+            💰 Tarifs
+          </div>
+        </nav>
+
+        <!-- Admin user + logout -->
+        <div
+          class="mt-auto pt-4"
+          style="border-top: 1px solid rgba(255, 255, 255, 0.1)"
+        >
+          <div class="flex items-center gap-2 px-2 py-2 mb-2">
+            <div
+              class="w-7 h-7 rounded-lg flex items-center justify-center text-white text-xs font-bold"
+              style="background: linear-gradient(135deg, #d62828, #e8a020)"
+              id="adminAvatar"
+            >
+              A
+            </div>
+            <div
+              class="text-xs text-white font-semibold truncate"
+              id="adminNameDisplay"
+            >
+              Admin
+            </div>
+          </div>
+          <button
+            onclick="window.STORE.admin.logoutAdmin()"
+            class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-colors hover:bg-white/10"
+            style="color: rgba(255, 255, 255, 0.5)"
+          >
+            🚪 Déconnexion
+          </button>
+          <a
+            href="index.html"
+            class="block text-center mt-1 text-xs py-2 rounded-xl transition-colors hover:bg-white/10"
+            style="color: rgba(255, 255, 255, 0.4)"
+            >← Voir le site</a
+          >
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-auto p-6">
+        <!-- ── DASHBOARD ──────────────────────────────────────── -->
+        <div id="sec-dashboard" class="admin-section active">
+          <h1
+            class="text-2xl font-black mb-6"
+            style="font-family: &quot;Syne&quot;, sans-serif; color: #1a1a2e"
+          >
+            Tableau de bord
+          </h1>
+          <div
+            id="adminStatsGrid"
+            class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
+          ></div>
+          <div class="grid lg:grid-cols-2 gap-6">
+            <div class="card p-5">
+              <div
+                class="font-bold mb-4"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                📦 Dernières commandes
+              </div>
+              <div id="adminRecentOrders" class="space-y-2"></div>
+            </div>
+            <div class="card p-5">
+              <div
+                class="font-bold mb-4"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                🔔 Notifications récentes
+              </div>
+              <div id="adminRecentNotifs" class="space-y-2"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ORDERS ─────────────────────────────────────────── -->
+        <div id="sec-orders" class="admin-section">
+          <div class="flex items-center justify-between mb-6">
+            <h1
+              class="text-2xl font-black"
+              style="font-family: &quot;Syne&quot;, sans-serif; color: #1a1a2e"
+            >
+              Commandes
+            </h1>
+            <div class="flex gap-2">
+              <select
+                id="orderStatusFilter"
+                class="input text-sm"
+                style="width: auto"
+                onchange="renderAdminOrders()"
+              >
+                <option value="">Toutes</option>
+                <option value="AWAITING_QUOTE">En attente de devis</option>
+                <option value="QUOTE_AVAILABLE">Devis envoyé</option>
+                <option value="CONFIRMED">Confirmées</option>
+                <option value="SHIPPING">En transit</option>
+                <option value="DELIVERED">Livrées</option>
+                <option value="ISSUE">Problème</option>
+              </select>
+            </div>
+          </div>
+          <div id="adminOrdersTable" class="card overflow-hidden">
+            <table class="w-full text-sm">
+              <thead style="background: #f5f0e8">
+                <tr>
+                  <th
+                    class="text-left px-4 py-3 text-xs font-bold"
+                    style="color: #5c5c6e"
+                  >
+                    Commande
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 text-xs font-bold"
+                    style="color: #5c5c6e"
+                  >
+                    Client
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 text-xs font-bold"
+                    style="color: #5c5c6e"
+                  >
+                    Statut
+                  </th>
+                  <th
+                    class="text-left px-4 py-3 text-xs font-bold"
+                    style="color: #5c5c6e"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── WAVES ──────────────────────────────────────────── -->
+        <div id="sec-waves" class="admin-section">
+          <div class="flex items-center justify-between mb-6">
+            <h1
+              class="text-2xl font-black"
+              style="font-family: &quot;Syne&quot;, sans-serif; color: #1a1a2e"
+            >
+              Vagues de commandes
+            </h1>
+            <button onclick="openWaveModal()" class="btn-primary">
+              + Nouvelle vague
+            </button>
+          </div>
+          <div id="adminWavesList" class="space-y-3"></div>
+        </div>
+
+        <!-- ── GALLERY ────────────────────────────────────────── -->
+        <div id="sec-gallery" class="admin-section">
+          <div class="flex items-center justify-between mb-6">
+            <h1
+              class="text-2xl font-black"
+              style="font-family: &quot;Syne&quot;, sans-serif; color: #1a1a2e"
+            >
+              Galerie
+            </h1>
+            <button onclick="openGalleryModal()" class="btn-primary">
+              + Ajouter une photo
+            </button>
+          </div>
+          <div
+            id="adminGalleryGrid"
+            class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+          ></div>
+        </div>
+
+        <!-- ── PRICING ────────────────────────────────────────── -->
+        <div id="sec-pricing" class="admin-section">
+          <h1
+            class="text-2xl font-black mb-6"
+            style="font-family: &quot;Syne&quot;, sans-serif; color: #1a1a2e"
+          >
+            Tarifications
+          </h1>
+
+          <!-- Service fees -->
+          <div class="card p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                💼 Frais de service
+              </div>
+              <button
+                onclick="savePricingFees()"
+                class="btn-primary text-xs px-4 py-2"
+              >
+                💾 Enregistrer
+              </button>
+            </div>
+            <div id="adminFeesEditor" class="space-y-2"></div>
+          </div>
+
+          <!-- Shipping -->
+          <div class="card p-6 mb-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                🚢 Tarifs transport (FCFA/kg)
+              </div>
+              <button
+                onclick="savePricingShipping()"
+                class="btn-primary text-xs px-4 py-2"
+              >
+                💾 Enregistrer
+              </button>
+            </div>
+            <div id="adminShippingEditor" class="space-y-2"></div>
+          </div>
+
+          <!-- Product types -->
+          <div class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                📦 Surcharges par catégorie
+              </div>
+              <button
+                onclick="savePricingTypes()"
+                class="btn-primary text-xs px-4 py-2"
+              >
+                💾 Enregistrer
+              </button>
+            </div>
+            <div id="adminTypesEditor" class="space-y-2"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ══ MODALS ═══════════════════════════════════════════════ -->
+    <div
+      id="adminModal"
+      class="fixed inset-0 z-[200] hidden items-center justify-center p-4"
+      style="background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px)"
+      onclick="if (event.target === this) closeAdminModal();"
+    >
+      <div
+        id="adminModalBox"
+        class="w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl"
+        style="background: white; max-height: 90vh; overflow-y: auto"
+      ></div>
+    </div>
+
+    <script src="assets/js/mockdata.js"></script>
+    <script src="assets/js/store.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <script>
+      // ════════════════════════════════════════════════════════════
+      // ADMIN – Auth & boot
+      // ════════════════════════════════════════════════════════════
+
+      async function bootAdmin() {
+        const exists = await window.AUTH.adminExists();
+        if (!exists) {
+          showAdminSetup();
+        } else if (!window.AUTH.isAdminLoggedIn()) {
+          showAdminLogin();
+        } else {
+          launchPanel();
+        }
+      }
+
+      function showAdminSetup() {
+        document.getElementById("adminAuthScreen").innerHTML = `
+      <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
+        <div class="w-full max-w-md">
+          <div class="flex items-center justify-center gap-3 mb-8">
+            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
+                 style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
+            <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+          </div>
+          <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
+            <div class="text-center mb-6">
+              <div class="text-4xl mb-3">🛡️</div>
+              <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Créer le compte admin</h2>
+              <p class="text-sm mt-1" style="color:#8C7B6B;">Première configuration – ce compte sera le seul administrateur.</p>
+            </div>
+            <div id="setupErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
+            <div class="space-y-4">
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Nom complet *</label>
+                <input id="setupName" class="input" placeholder="Nom de l'administrateur">
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Numéro de téléphone *</label>
+                <input id="setupPhone" class="input" type="tel" placeholder="+237 XXX XXX XXX">
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe *</label>
+                <input id="setupPass" class="input" type="password" placeholder="Min. 6 caractères">
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Confirmer le mot de passe *</label>
+                <input id="setupPass2" class="input" type="password" placeholder="Répétez">
+              </div>
+              <button onclick="doSetup()" class="btn-primary w-full justify-center" style="padding:13px;">
+                🛡️ Créer le compte admin
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+      }
+
+      function showAdminLogin() {
+        document.getElementById("adminAuthScreen").innerHTML = `
+      <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
+        <div class="w-full max-w-sm">
+          <div class="flex items-center justify-center gap-3 mb-8">
+            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
+                 style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
+            <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+          </div>
+          <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
+            <div class="text-center mb-6">
+              <div class="text-4xl mb-2">🔐</div>
+              <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Connexion Admin</h2>
+            </div>
+            <div id="loginErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
+            <div class="space-y-4">
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Téléphone</label>
+                <input id="adminPhone" class="input" type="tel" placeholder="+237 XXX XXX XXX">
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe</label>
+                <input id="adminPass" class="input" type="password" placeholder="Votre mot de passe"
+                       onkeydown="if(event.key==='Enter')doAdminLogin()">
+              </div>
+              <button onclick="doAdminLogin()" class="btn-primary w-full justify-center" style="padding:13px;">
+                🔐 Se connecter
+              </button>
+            </div>
+          </div>
+          <p class="text-center mt-4 text-sm"><a href="index.html" style="color:rgba(255,255,255,0.5);">← Retour au site</a></p>
+        </div>
+      </div>`;
+      }
+
+      async function doSetup() {
+        const name = document.getElementById("setupName")?.value.trim();
+        const phone = document.getElementById("setupPhone")?.value.trim();
+        const pass = document.getElementById("setupPass")?.value;
+        const pass2 = document.getElementById("setupPass2")?.value;
+        const err = document.getElementById("setupErr");
+
+        if (!name || !phone || !pass) {
+          err.textContent = "⚠️ Tous les champs sont obligatoires.";
+          err.classList.remove("hidden");
+          return;
+        }
+        if (pass !== pass2) {
+          err.textContent = "⚠️ Les mots de passe ne correspondent pas.";
+          err.classList.remove("hidden");
+          return;
+        }
+        if (pass.length < 6) {
+          err.textContent = "⚠️ Mot de passe trop court (min 6 caractères).";
+          err.classList.remove("hidden");
+          return;
+        }
+
+        const result = await window.AUTH.setupAdmin({
+          name,
+          phone,
+          password: pass,
+        });        
+        localStorage.setItem("accessToken", result.accessToken);
+        localStorage.setItem("refreshToken", result.refreshToken);
+        document.getElementById("adminAuthScreen").innerHTML = "";
+        launchPanel();
+      }
+
+      async function doAdminLogin() {
+        const phone = document.getElementById("adminPhone")?.value.trim();
+        const pass = document.getElementById("adminPass")?.value;
+        const err = document.getElementById("loginErr");
+
+        const result = await window.AUTH.loginAdmin(phone, pass);
+        if (!result.ok) {          
+          err.textContent = "⚠️ " + result.error;
+          err.classList.remove("hidden");
+          return;
+        }
+
+        document.getElementById("adminAuthScreen").innerHTML = "";
+        launchPanel();
+      }
+
+      async function launchPanel() {
+        document.getElementById("adminAuthScreen").innerHTML = "";
+        document.getElementById("adminPanel").classList.remove("hidden");
+
+        const a = window.STORE.admin.getAdmin();
+        if (a) {
+          document.getElementById("adminNameDisplay").textContent = a.name;
+          document.getElementById("adminAvatar").textContent = a.name
+            .charAt(0)
+            .toUpperCase();
+        }
+
+        await loadAdminData();
+        showSection("dashboard");
+      }
+
+      async function loadAdminData() {
+        window._adminOrders = await window.STORE.orders.getAll();
+        window._adminWaves = await window.STORE.waves.getAll();
+        window._adminGallery = await window.STORE.gallery.getAll();
+        window._adminPricing = await window.STORE.pricing.get();
+        window._adminNotifs = window.STORE.notifs.getAll();
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Navigation
+      // ════════════════════════════════════════════════════════════
+      function showSection(id) {
+        document
+          .querySelectorAll(".admin-section")
+          .forEach((s) => s.classList.remove("active"));
+        document
+          .querySelectorAll(".admin-nav-item")
+          .forEach((n) => n.classList.remove("active"));
+
+        document.getElementById("sec-" + id)?.classList.add("active");
+        document.querySelectorAll(".admin-nav-item").forEach((n) => {
+          if (
+            n.textContent
+              .trim()
+              .toLowerCase()
+              .startsWith(
+                id === "dashboard"
+                  ? "📊"
+                  : id === "orders"
+                    ? "📦"
+                    : id === "waves"
+                      ? "🌊"
+                      : id === "gallery"
+                        ? "🖼️"
+                        : "💰",
+              )
+          )
+            n.classList.add("active");
+        });
+
+        const renders = {
+          dashboard: renderAdminDashboard,
+          orders: renderAdminOrders,
+          waves: renderAdminWaves,
+          gallery: renderAdminGallery,
+          pricing: renderAdminPricing,
+        };
+        renders[id]?.();
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Dashboard
+      // ════════════════════════════════════════════════════════════
+      function renderAdminDashboard() {
+        const orders = window._adminOrders || [];
+        const awaiting = orders.filter(
+          (o) => o.status === "AWAITING_QUOTE",
+        ).length;
+        const active = orders.filter((o) =>
+          ["CONFIRMED", "CN_TRANSIT", "SHIPPING", "CUSTOMS"].includes(o.status),
+        ).length;
+        const delivered = orders.filter((o) => o.status === "DELIVERED").length;
+        const total = orders.length;
+
+        const grid = document.getElementById("adminStatsGrid");
+        if (grid) {
+          const items = [
+            {
+              icon: "📦",
+              label: "Total commandes",
+              value: total,
+              color: "#1A1A2E",
+            },
+            {
+              icon: "📝",
+              label: "Devis en attente",
+              value: awaiting,
+              color: "#D97706",
+              urgent: awaiting > 0,
+            },
+            { icon: "✈️", label: "En cours", value: active, color: "#6366F1" },
+            {
+              icon: "✅",
+              label: "Livrées",
+              value: delivered,
+              color: "#10B981",
+            },
+          ];
+          grid.innerHTML = items
+            .map(
+              (s) => `
+        <div class="card p-4 text-center ${s.urgent ? "ring-2" : ""}" style="${s.urgent ? "ring-color:#D97706;outline:2px solid #D97706;" : ""}">
+          <div class="text-2xl mb-1">${s.icon}</div>
+          <div class="text-3xl font-black" style="color:${s.color};font-family:'Syne',sans-serif;">${s.value}</div>
+          <div class="text-xs mt-0.5" style="color:#8C7B6B;">${s.label}</div>
+          ${s.urgent ? '<div class="text-xs mt-1 font-bold" style="color:#D97706;">Action requise</div>' : ""}
+        </div>`,
+            )
+            .join("");
+        }
+
+        // Update pending badge
+        const badge = document.getElementById("pendingBadge");
+        if (badge) {
+          if (awaiting > 0) {
+            badge.textContent = awaiting;
+            badge.style.display = "inline-flex";
+          } else badge.style.display = "none";
+        }
+
+        // Recent orders
+        const recentEl = document.getElementById("adminRecentOrders");
+        if (recentEl) {
+          const recent = orders.slice(0, 5);
+          const SC = {
+            AWAITING_QUOTE: "#D97706",
+            QUOTE_AVAILABLE: "#D62828",
+            CONFIRMED: "#3B82F6",
+            DELIVERED: "#10B981",
+            ISSUE: "#EF4444",
+          };
+          recentEl.innerHTML = recent
+            .map(
+              (o) => `
+        <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-50 cursor-pointer table-row"
+             onclick="showSection('orders')">
+          <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white text-xs flex-shrink-0"
+               style="background:${SC[o.status] || "#8C7B6B"};">
+            ${ORDER_STATUSES[o.status]?.icon || "📦"}
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-xs font-bold truncate" style="color:#1A1A2E;">${o.product}</div>
+            <div class="text-xs" style="color:#8C7B6B;">${o.id} · ${new Date(o.date).toLocaleDateString("fr-FR")}</div>
+          </div>
+          <span class="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
+                style="background:${SC[o.status] || "#8C7B6B"}18;color:${SC[o.status] || "#8C7B6B"};">
+            ${ORDER_STATUSES[o.status]?.label || o.status}
+          </span>
+        </div>`,
+            )
+            .join("");
+        }
+
+        // Recent notifs
+        const notifEl = document.getElementById("adminRecentNotifs");
+        const notifs = window._adminNotifs || [];
+        if (notifEl) {
+          notifEl.innerHTML =
+            notifs
+              .slice(0, 5)
+              .map(
+                (n) => `
+        <div class="flex gap-3 p-2 rounded-xl ${!n.read ? "bg-red-50/40" : ""}">
+          <div class="text-lg">${n.type === "QUOTE_AVAILABLE" ? "💰" : "ℹ️"}</div>
+          <div>
+            <div class="text-xs font-bold" style="color:#1A1A2E;">${n.title}</div>
+            <div class="text-xs" style="color:#8C7B6B;">${n.message?.slice(0, 60)}…</div>
+          </div>
+        </div>`,
+              )
+              .join("") ||
+            '<div class="text-xs text-center py-4" style="color:#8C7B6B;">Aucune notification</div>';
+        }
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Orders
+      // ════════════════════════════════════════════════════════════
+      function renderAdminOrders() {
+        const statusFilter =
+          document.getElementById("orderStatusFilter")?.value || "";
+        let orders = window._adminOrders || [];
+        if (statusFilter)
+          orders = orders.filter((o) => o.status === statusFilter);
+
+        const SC = {
+          AWAITING_QUOTE: "#D97706",
+          QUOTE_AVAILABLE: "#D62828",
+          QUOTE_ACCEPTED: "#3B82F6",
+          CONFIRMED: "#3B82F6",
+          SHIPPING: "#6366F1",
+          DELIVERED: "#10B981",
+          ISSUE: "#EF4444",
+          PENDING: "#D97706",
+        };
+        const tbody = document.getElementById("adminOrdersBody");
+        if (!tbody) return;
+
+        tbody.innerHTML =
+          orders
+            .map((o) => {
+              const color = SC[o.status] || "#8C7B6B";
+              const st = ORDER_STATUSES[o.status] || {};
+              return `
+        <tr class="table-row" style="border-top:1px solid #F5F0E8;">
+          <td class="px-4 py-3">
+            <div class="text-xs font-bold" style="color:#1A1A2E;">${o.id}</div>
+            <div class="text-xs truncate max-w-[160px]" style="color:#8C7B6B;">${o.product}</div>
+            <div class="text-xs" style="color:#C4B5A5;">${new Date(o.date).toLocaleDateString("fr-FR")}</div>
+          </td>
+          <td class="px-4 py-3">
+            <div class="text-xs font-bold" style="color:#1A1A2E;">${o.userId || "—"}</div>
+            <div class="text-xs" style="color:#8C7B6B;">${o.city || ""}, ${o.country || ""}</div>
+          </td>
+          <td class="px-4 py-3">
+            <span class="badge" style="background:${color}18;color:${color};">${st.icon || ""} ${st.label || o.status}</span>
+          </td>
+          <td class="px-4 py-3">
+            <div class="flex gap-2 flex-wrap">
+              <button onclick="viewOrder('${o.id}')"
+                      class="text-xs px-3 py-1.5 rounded-lg font-semibold transition-colors hover:bg-gray-100"
+                      style="color:#1A1A2E;border:1px solid #E8DDD0;">👁️ Voir</button>
+              ${
+                o.status === "AWAITING_QUOTE"
+                  ? `
+                <button onclick="openQuoteModal('${o.id}')"
+                        class="text-xs px-3 py-1.5 rounded-lg font-semibold text-white"
+                        style="background:#D62828;">💰 Envoyer devis</button>`
+                  : ""
+              }
+              ${
+                ["CONFIRMED", "CN_TRANSIT", "SHIPPING", "CUSTOMS"].includes(
+                  o.status,
+                )
+                  ? `
+                <button onclick="openStatusModal('${o.id}')"
+                        class="text-xs px-3 py-1.5 rounded-lg font-semibold"
+                        style="background:#EFF6FF;color:#3B82F6;border:1px solid #BFDBFE;">✏️ Statut</button>`
+                  : ""
+              }
+            </div>
+          </td>
+        </tr>`;
+            })
+            .join("") ||
+          `<tr><td colspan="4" class="text-center py-8 text-sm" style="color:#8C7B6B;">Aucune commande</td></tr>`;
+      }
+
+      async function viewOrder(id) {
+        const o = (window._adminOrders || []).find((x) => x.id === id);
+        if (!o) return;
+        openAdminModal(
+          "Détails commande – " + id,
+          `
+      <div class="space-y-4 p-2">
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div><span style="color:#8C7B6B;">Produit :</span><br><strong>${o.product}</strong></div>
+          <div><span style="color:#8C7B6B;">Quantité :</span><br><strong>${o.quantity || "—"}</strong></div>
+          <div><span style="color:#8C7B6B;">Catégorie :</span><br><strong>${o.category || "—"}</strong></div>
+          <div><span style="color:#8C7B6B;">Transport :</span><br><strong>${o.transport || "—"}</strong></div>
+          <div><span style="color:#8C7B6B;">Vague :</span><br><strong>${o.waveId || "—"}</strong></div>
+          <div><span style="color:#8C7B6B;">Statut :</span><br><strong>${ORDER_STATUSES[o.status]?.label || o.status}</strong></div>
+        </div>
+        ${o.productLink ? `<div class="p-3 rounded-xl text-xs break-all" style="background:#F5F0E8;color:#5C5C6E;"><strong>Lien :</strong><br>${o.productLink}</div>` : ""}
+        ${
+          o.quote
+            ? `
+          <div class="p-3 rounded-xl" style="background:#FFF5F5;">
+            <div class="text-xs font-bold mb-2" style="color:#D62828;">💰 Devis</div>
+            <div class="grid grid-cols-2 gap-1 text-xs">
+              <span style="color:#5C5C6E;">Produit</span><span style="text-align:right;">${Number(o.quote.productCost).toLocaleString("fr-FR")} FCFA</span>
+              <span style="color:#5C5C6E;">Service</span><span style="text-align:right;">${Number(o.quote.serviceFee).toLocaleString("fr-FR")} FCFA</span>
+              <span style="color:#5C5C6E;">Transport</span><span style="text-align:right;">${Number(o.quote.shippingCost).toLocaleString("fr-FR")} FCFA</span>
+              <span style="color:#5C5C6E;">Douane</span><span style="text-align:right;">${Number(o.quote.customsDuty).toLocaleString("fr-FR")} FCFA</span>
+              <strong>TOTAL</strong><strong style="color:#D62828;text-align:right;">${Number(o.quote.total).toLocaleString("fr-FR")} FCFA</strong>
+            </div>
+          </div>`
+            : ""
+        }
+      </div>`,
+        );
+      }
+
+      function openQuoteModal(orderId) {
+        openAdminModal(
+          "💰 Envoyer un devis – " + orderId,
+          `
+      <div class="space-y-3 p-2">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Coût produit (FCFA)</label>
+            <input id="qProduct" type="number" class="input" placeholder="ex: 150000"></div>
+          <div><label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Frais service (FCFA)</label>
+            <input id="qService" type="number" class="input" placeholder="ex: 22500"></div>
+          <div><label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Transport (FCFA)</label>
+            <input id="qShipping" type="number" class="input" placeholder="ex: 45000"></div>
+          <div><label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Douane (FCFA)</label>
+            <input id="qCustoms" type="number" class="input" placeholder="ex: 15000"></div>
+        </div>
+        <div id="qTotal" class="p-3 rounded-xl text-sm font-bold text-center" style="background:#FFF5F5;color:#D62828;">
+          Total : 0 FCFA
+        </div>
+        <button onclick="submitQuote('${orderId}')" class="btn-primary w-full justify-center" style="padding:13px;">
+          📩 Envoyer le devis au client
+        </button>
+      </div>`,
+        );
+
+        // Live total
+        ["qProduct", "qService", "qShipping", "qCustoms"].forEach((id) => {
+          document.getElementById(id)?.addEventListener("input", updateQTotal);
+        });
+      }
+
+      function updateQTotal() {
+        const sum = ["qProduct", "qService", "qShipping", "qCustoms"].reduce(
+          (s, id) => s + (parseFloat(document.getElementById(id)?.value) || 0),
+          0,
+        );
+        const el = document.getElementById("qTotal");
+        if (el)
+          el.textContent =
+            "Total : " + Number(sum).toLocaleString("fr-FR") + " FCFA";
+      }
+
+      async function submitQuote(orderId) {
+        const productCost =
+          parseFloat(document.getElementById("qProduct")?.value) || 0;
+        const serviceFee =
+          parseFloat(document.getElementById("qService")?.value) || 0;
+        const shippingCost =
+          parseFloat(document.getElementById("qShipping")?.value) || 0;
+        const customsDuty =
+          parseFloat(document.getElementById("qCustoms")?.value) || 0;
+        const total = productCost + serviceFee + shippingCost + customsDuty;
+
+        if (total <= 0) {
+          window.showToast?.("⚠️ Entrez les montants du devis.", "error");
+          return;
+        }
+
+        await window.STORE.orders.attachQuote(orderId, {
+          productCost,
+          serviceFee,
+          shippingCost,
+          customsDuty,
+          total,
+        });
+        window._adminOrders = await window.STORE.orders.getAll();
+        closeAdminModal();
+        renderAdminOrders();
+        window.showToast?.(
+          "✅ Devis envoyé ! Le client a été notifié.",
+          "success",
+        );
+      }
+
+      function openStatusModal(orderId) {
+        const o = (window._adminOrders || []).find((x) => x.id === orderId);
+        if (!o) return;
+        const statuses = [
+          "CONFIRMED",
+          "CN_TRANSIT",
+          "SHIPPING",
+          "CUSTOMS",
+          "DELIVERED",
+          "ISSUE",
+        ];
+        openAdminModal(
+          "✏️ Mettre à jour le statut",
+          `
+      <div class="space-y-3 p-2">
+        <div class="text-xs font-bold mb-2" style="color:#5C5C6E;">Statut actuel : <strong>${ORDER_STATUSES[o.status]?.label}</strong></div>
+        <div class="space-y-2">
+          ${statuses
+            .map((s) => {
+              const st = ORDER_STATUSES[s] || {};
+              const SC = {
+                CONFIRMED: "#3B82F6",
+                CN_TRANSIT: "#8B5CF6",
+                SHIPPING: "#6366F1",
+                CUSTOMS: "#F59E0B",
+                DELIVERED: "#10B981",
+                ISSUE: "#EF4444",
+              };
+              const c = SC[s] || "#8C7B6B";
+              return `
+              <button onclick="updateOrderStatus('${orderId}','${s}')"
+                      class="w-full flex items-center gap-3 px-4 py-3 rounded-xl border-2 transition-all text-left"
+                      style="border-color:${o.status === s ? c : "#E8DDD0"};background:${o.status === s ? c + "15" : "white"};">
+                <span class="text-lg">${st.icon || "·"}</span>
+                <span class="font-semibold text-sm" style="color:#1A1A2E;">${st.label || s}</span>
+                ${o.status === s ? '<span class="ml-auto text-xs font-bold" style="color:' + c + ';">Actuel</span>' : ""}
+              </button>`;
+            })
+            .join("")}
+        </div>
+        <div>
+          <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Note / Commentaire</label>
+          <input id="statusNote" class="input" placeholder="ex: Colis arrivé à Douala">
+        </div>
+      </div>`,
+        );
+      }
+
+      async function updateOrderStatus(orderId, newStatus) {
+        const note =
+          document.getElementById("statusNote")?.value ||
+          ORDER_STATUSES[newStatus]?.label ||
+          "";
+        const list = JSON.parse(localStorage.getItem("namm_orders") || "[]");
+        const idx = list.findIndex((o) => o.id === orderId);
+        if (idx !== -1) {
+          list[idx].status = newStatus;
+          list[idx].timeline = list[idx].timeline || [];
+          list[idx].timeline.push({
+            date: new Date().toISOString().split("T")[0],
+            status: newStatus,
+            note,
+          });
+          if (newStatus === "DELIVERED")
+            list[idx].deliveryDate = new Date().toISOString().split("T")[0];
+          localStorage.setItem("namm_orders", JSON.stringify(list));
+        }
+        window._adminOrders = list;
+        closeAdminModal();
+        renderAdminOrders();
+        window.showToast?.("✅ Statut mis à jour.", "success");
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Waves CRUD
+      // ════════════════════════════════════════════════════════════
+      function renderAdminWaves() {
+        const el = document.getElementById("adminWavesList");
+        const waves = window._adminWaves || [];
+        if (!el) return;
+        el.innerHTML =
+          waves
+            .map(
+              (w) => `
+      <div class="card p-4 flex items-center gap-4">
+        <div class="flex-1 min-w-0">
+          <div class="font-bold" style="color:#1A1A2E;">${w.wave}</div>
+          <div class="text-xs mt-0.5" style="color:#8C7B6B;">${w.notes}</div>
+          <div class="flex gap-3 mt-2 text-xs" style="color:#5C5C6E;">
+            <span>📅 Limite : <strong>${new Date(w.deadline).toLocaleDateString("fr-FR")}</strong></span>
+            <span>✈️ Expéd. : <strong>${new Date(w.shipping).toLocaleDateString("fr-FR")}</strong></span>
+            <span>📦 Arrivée : <strong>${new Date(w.arrival).toLocaleDateString("fr-FR")}</strong></span>
+          </div>
+        </div>
+        <div class="flex gap-2 flex-shrink-0">
+          <button onclick="openWaveModal('${w.id}')" class="btn-ghost text-xs px-3 py-2">✏️</button>
+          <button onclick="deleteWave('${w.id}')"
+                  class="text-xs px-3 py-2 rounded-xl transition-colors hover:bg-red-50"
+                  style="color:#D62828;border:1px solid #FECACA;">🗑️</button>
+        </div>
+      </div>`,
+            )
+            .join("") ||
+          '<div class="text-center py-8 text-sm" style="color:#8C7B6B;">Aucune vague. Créez-en une.</div>';
+      }
+
+      function openWaveModal(id = null) {
+        const existing = id
+          ? (window._adminWaves || []).find((w) => w.id === id)
+          : null;
+        openAdminModal(
+          existing ? "✏️ Modifier la vague" : "🌊 Nouvelle vague",
+          `
+      <div class="space-y-4 p-2">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Nom de la vague *</label>
+            <input id="wvName" class="input" placeholder="ex: Vague 7" value="${existing?.wave || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Date limite commande *</label>
+            <input id="wvDeadline" type="date" class="input" value="${existing?.deadline || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Date expédition *</label>
+            <input id="wvShipping" type="date" class="input" value="${existing?.shipping || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Date arrivée prévue *</label>
+            <input id="wvArrival" type="date" class="input" value="${existing?.arrival || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mode transport</label>
+            <select id="wvTransport" class="input">
+              <option ${existing?.transport === "Mer" ? "selected" : ""}>Mer</option>
+              <option ${existing?.transport === "Avion" ? "selected" : ""}>Avion</option>
+              <option ${existing?.transport === "Mer + Avion" ? "selected" : ""}>Mer + Avion</option>
+              <option ${existing?.transport === "Avion prioritaire" ? "selected" : ""}>Avion prioritaire</option>
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Notes</label>
+            <input id="wvNotes" class="input" placeholder="ex: Après Nouvel An Chinois" value="${existing?.notes || ""}">
+          </div>
+        </div>
+        <button onclick="saveWave('${id || ""}')" class="btn-primary w-full justify-center" style="padding:13px;">
+          💾 ${existing ? "Mettre à jour" : "Créer la vague"}
+        </button>
+      </div>`,
+        );
+      }
+
+      async function saveWave(id) {
+        const data = {
+          wave: document.getElementById("wvName")?.value.trim(),
+          deadline: document.getElementById("wvDeadline")?.value,
+          shipping: document.getElementById("wvShipping")?.value,
+          arrival: document.getElementById("wvArrival")?.value,
+          transport: document.getElementById("wvTransport")?.value,
+          notes: document.getElementById("wvNotes")?.value.trim(),
+        };
+        if (!data.wave || !data.deadline || !data.shipping || !data.arrival) {
+          window.showToast?.(
+            "⚠️ Remplissez tous les champs obligatoires.",
+            "error",
+          );
+          return;
+        }
+        if (id) await window.STORE.waves.update(id, data);
+        else await window.STORE.waves.create(data);
+        window._adminWaves = await window.STORE.waves.getAll();
+        closeAdminModal();
+        renderAdminWaves();
+        window.showToast?.(
+          "✅ Vague " + (id ? "modifiée" : "créée") + " !",
+          "success",
+        );
+      }
+
+      async function deleteWave(id) {
+        if (!confirm("Supprimer cette vague ?")) return;
+        await window.STORE.waves.delete(id);
+        window._adminWaves = await window.STORE.waves.getAll();
+        renderAdminWaves();
+        window.showToast?.("🗑️ Vague supprimée.", "success");
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Gallery CRUD
+      // ════════════════════════════════════════════════════════════
+      function renderAdminGallery() {
+        const el = document.getElementById("adminGalleryGrid");
+        const items = window._adminGallery || [];
+        if (!el) return;
+        el.innerHTML =
+          items
+            .map(
+              (g) => `
+      <div class="card overflow-hidden">
+        <div class="relative" style="aspect-ratio:4/3;">
+          <img src="${g.thumb}" class="w-full h-full object-cover" loading="lazy">
+          <span class="absolute top-2 left-2 text-xs px-2 py-0.5 rounded-full font-semibold"
+                style="background:rgba(255,255,255,0.9);color:#1A1A2E;">
+            ${g.type === "video" ? "🎥" : "📷"}
+          </span>
+        </div>
+        <div class="p-3">
+          <div class="text-xs font-bold truncate mb-0.5" style="color:#1A1A2E;">${g.product}</div>
+          <div class="text-xs" style="color:#8C7B6B;">${g.client}</div>
+          <div class="flex gap-2 mt-2">
+            <button onclick="openGalleryModal(${g.id})" class="btn-ghost text-xs px-3 py-1.5 flex-1">✏️ Modifier</button>
+            <button onclick="deleteGalleryItem(${g.id})"
+                    class="text-xs px-3 py-1.5 rounded-xl hover:bg-red-50 transition-colors"
+                    style="color:#D62828;border:1px solid #FECACA;">🗑️</button>
+          </div>
+        </div>
+      </div>`,
+            )
+            .join("") ||
+          '<div class="col-span-full text-center py-8 text-sm" style="color:#8C7B6B;">Aucun élément dans la galerie.</div>';
+      }
+
+      function openGalleryModal(id = null) {
+        const existing = id
+          ? (window._adminGallery || []).find((g) => g.id === id)
+          : null;
+        openAdminModal(
+          existing ? "✏️ Modifier la photo" : "🖼️ Ajouter à la galerie",
+          `
+      <div class="space-y-3 p-2">
+        <div class="grid grid-cols-2 gap-3">
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Produit *</label>
+            <input id="gProduct" class="input" placeholder="ex: Tissus wax (50m)" value="${existing?.product || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Type</label>
+            <select id="gType" class="input">
+              <option value="photo" ${existing?.type === "photo" ? "selected" : ""}>📷 Photo</option>
+              <option value="video" ${existing?.type === "video" ? "selected" : ""}>🎥 Vidéo</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Catégorie</label>
+            <select id="gCategory" class="input">
+              ${[
+                "Textile",
+                "Électronique",
+                "Chaussures",
+                "Cosmétiques",
+                "Maison",
+                "Bijoux",
+                "Accessoires",
+                "Alimentaire",
+              ]
+                .map(
+                  (c) =>
+                    `<option ${existing?.category === c ? "selected" : ""}>${c}</option>`,
+                )
+                .join("")}
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">URL image (miniature) *</label>
+            <input id="gThumb" class="input" placeholder="https://..." value="${existing?.thumb || ""}">
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">URL image (plein écran)</label>
+            <input id="gFull" class="input" placeholder="https://..." value="${existing?.full || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Client</label>
+            <input id="gClient" class="input" placeholder="ex: Marie K., Yaoundé" value="${existing?.client || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Poids (kg)</label>
+            <input id="gWeight" type="number" class="input" step="0.1" placeholder="ex: 12" value="${existing?.weight || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Date commande</label>
+            <input id="gOrder" type="date" class="input" value="${existing?.orderDate || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Date arrivée</label>
+            <input id="gArrival" type="date" class="input" value="${existing?.arrivalDate || ""}">
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Note (⭐)</label>
+            <select id="gRating" class="input">
+              ${[5, 4, 3, 2, 1].map((r) => `<option value="${r}" ${existing?.rating === r ? "selected" : ""}>${"⭐".repeat(r)}</option>`).join("")}
+            </select>
+          </div>
+          <div class="col-span-2">
+            <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Commentaire client</label>
+            <textarea id="gComment" class="input" rows="2" style="resize:none;">${existing?.comment || ""}</textarea>
+          </div>
+        </div>
+        <button onclick="saveGalleryItem(${id || "null"})" class="btn-primary w-full justify-center" style="padding:13px;">
+          💾 ${existing ? "Mettre à jour" : "Ajouter à la galerie"}
+        </button>
+      </div>`,
+        );
+      }
+
+      async function saveGalleryItem(id) {
+        const data = {
+          product: document.getElementById("gProduct")?.value.trim(),
+          type: document.getElementById("gType")?.value,
+          category: document.getElementById("gCategory")?.value,
+          thumb: document.getElementById("gThumb")?.value.trim(),
+          full:
+            document.getElementById("gFull")?.value.trim() ||
+            document.getElementById("gThumb")?.value.trim(),
+          client: document.getElementById("gClient")?.value.trim(),
+          weight: parseFloat(document.getElementById("gWeight")?.value) || null,
+          orderDate: document.getElementById("gOrder")?.value,
+          arrivalDate: document.getElementById("gArrival")?.value,
+          rating: parseInt(document.getElementById("gRating")?.value) || 5,
+          comment: document.getElementById("gComment")?.value.trim(),
+        };
+        if (!data.product || !data.thumb) {
+          window.showToast?.(
+            "⚠️ Produit et URL image sont obligatoires.",
+            "error",
+          );
+          return;
+        }
+        if (id && id !== "null") await window.STORE.gallery.update(id, data);
+        else await window.STORE.gallery.create(data);
+        window._adminGallery = await window.STORE.gallery.getAll();
+        closeAdminModal();
+        renderAdminGallery();
+        window.showToast?.("✅ Galerie mise à jour !", "success");
+      }
+
+      async function deleteGalleryItem(id) {
+        if (!confirm("Supprimer cette photo/vidéo ?")) return;
+        await window.STORE.gallery.delete(id);
+        window._adminGallery = await window.STORE.gallery.getAll();
+        renderAdminGallery();
+        window.showToast?.("🗑️ Élément supprimé.", "success");
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Pricing editors
+      // ════════════════════════════════════════════════════════════
+      function renderAdminPricing() {
+        const p = window._adminPricing || {};
+
+        // Service fees
+        const feesEl = document.getElementById("adminFeesEditor");
+        if (feesEl && p.serviceFees) {
+          feesEl.innerHTML = p.serviceFees
+            .map(
+              (f, i) => `
+        <div class="grid grid-cols-3 gap-2 items-center p-2 rounded-xl" style="background:#FEFCF8;border:1px solid #E8DDD0;">
+          <input class="input text-xs" data-fee-label="${i}" value="${f.label}" placeholder="Tranche">
+          <input type="number" class="input text-xs" data-fee-pct="${i}" value="${f.pct}" min="0" max="100" placeholder="%">
+          <span class="text-xs text-center font-bold" style="color:#D62828;">${f.pct}%</span>
+        </div>`,
+            )
+            .join("");
+
+          feesEl.querySelectorAll("[data-fee-pct]").forEach((inp) => {
+            inp.addEventListener("input", function () {
+              const next = this.closest("div").querySelector("span");
+              if (next) next.textContent = this.value + "%";
+            });
+          });
+        }
+
+        // Shipping
+        const shipEl = document.getElementById("adminShippingEditor");
+        if (shipEl && p.shippingByKg) {
+          shipEl.innerHTML = p.shippingByKg
+            .map(
+              (s, i) => `
+        <div class="grid grid-cols-3 gap-2 items-center p-2 rounded-xl" style="background:#FEFCF8;border:1px solid #E8DDD0;">
+          <div class="flex items-center gap-2 text-xs font-semibold" style="color:#1A1A2E;">${s.icon} ${s.transport}</div>
+          <div>
+            <input type="number" class="input text-xs" data-ship-price="${i}" value="${s.pricePerKg}" placeholder="FCFA/kg">
+          </div>
+          <div class="text-xs" style="color:#8C7B6B;">${s.timeframe}</div>
+        </div>`,
+            )
+            .join("");
+        }
+
+        // Product types
+        const typesEl = document.getElementById("adminTypesEditor");
+        if (typesEl && p.byProductType) {
+          typesEl.innerHTML = p.byProductType
+            .map(
+              (t, i) => `
+        <div class="grid grid-cols-3 gap-2 items-center p-2 rounded-xl" style="background:#FEFCF8;border:1px solid #E8DDD0;">
+          <div class="flex items-center gap-2 text-xs font-semibold" style="color:#1A1A2E;">${t.icon} ${t.category}</div>
+          <input class="input text-xs" data-type-surcharge="${i}" value="${t.surcharge}" placeholder="Surcharge">
+          <input class="input text-xs" data-type-note="${i}" value="${t.note}" placeholder="Note">
+        </div>`,
+            )
+            .join("");
+        }
+      }
+
+      async function savePricingFees() {
+        const p = window._adminPricing || {};
+        const fees = (p.serviceFees || []).map((f, i) => ({
+          ...f,
+          label:
+            document.querySelector(`[data-fee-label="${i}"]`)?.value || f.label,
+          pct:
+            parseFloat(
+              document.querySelector(`[data-fee-pct="${i}"]`)?.value,
+            ) || f.pct,
+        }));
+        await window.STORE.pricing.updateServiceFees(fees);
+        window._adminPricing = await window.STORE.pricing.get();
+        window.showToast?.("✅ Frais de service enregistrés.", "success");
+      }
+
+      async function savePricingShipping() {
+        const p = window._adminPricing || {};
+        const shipping = (p.shippingByKg || []).map((s, i) => ({
+          ...s,
+          pricePerKg:
+            parseFloat(
+              document.querySelector(`[data-ship-price="${i}"]`)?.value,
+            ) || s.pricePerKg,
+        }));
+        await window.STORE.pricing.updateShipping(shipping);
+        window._adminPricing = await window.STORE.pricing.get();
+        window.showToast?.("✅ Tarifs transport enregistrés.", "success");
+      }
+
+      async function savePricingTypes() {
+        const p = window._adminPricing || {};
+        const types = (p.byProductType || []).map((t, i) => ({
+          ...t,
+          surcharge:
+            document.querySelector(`[data-type-surcharge="${i}"]`)?.value ||
+            t.surcharge,
+          note:
+            document.querySelector(`[data-type-note="${i}"]`)?.value || t.note,
+        }));
+        await window.STORE.pricing.updateProductTypes(types);
+        window._adminPricing = await window.STORE.pricing.get();
+        window.showToast?.("✅ Surcharges enregistrées.", "success");
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Modal helper
+      // ════════════════════════════════════════════════════════════
+      function openAdminModal(title, bodyHTML) {
+        const box = document.getElementById("adminModalBox");
+        box.innerHTML = `
+      <div class="flex items-center justify-between px-6 py-4" style="border-bottom:1px solid #E8DDD0;">
+        <div class="font-bold text-base" style="font-family:'Syne',sans-serif;color:#1A1A2E;">${title}</div>
+        <button onclick="closeAdminModal()" class="w-8 h-8 rounded-full flex items-center justify-center hover:bg-gray-100" style="color:#8C7B6B;">✕</button>
+      </div>
+      <div class="p-6">${bodyHTML}</div>`;
+        const modal = document.getElementById("adminModal");
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+      }
+
+      function closeAdminModal() {
+        const modal = document.getElementById("adminModal");
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }
+
+      // ════════════════════════════════════════════════════════════
+      // Boot
+      // ════════════════════════════════════════════════════════════
+      document.addEventListener("DOMContentLoaded", () => {
+        bootAdmin();
+      });
+    </script>
+  </body>
+</html>

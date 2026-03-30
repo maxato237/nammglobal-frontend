@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NAMM GLOBAL – Import Chine · Afrique</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                red: "#D62828",
+                gold: "#E8A020",
+                dark: "#1A1A2E",
+                cream: "#FEFCF8",
+              },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body>
+    <div id="nav-container"></div>
+
+    <!-- HERO -->
+    <section
+      class="relative overflow-hidden"
+      style="
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #2d1b1b 50%,
+          #1a1a2e 100%
+        );
+        min-height: 92vh;
+      "
+    >
+      <canvas
+        id="heroCanvas"
+        class="absolute inset-0 w-full h-full opacity-60"
+      ></canvas>
+
+      <!-- Decorative rings -->
+      <div
+        class="absolute"
+        style="
+          width: 600px;
+          height: 600px;
+          border: 1px solid rgba(255, 255, 255, 0.04);
+          border-radius: 50%;
+          top: -150px;
+          right: -150px;
+        "
+      ></div>
+      <div
+        class="absolute"
+        style="
+          width: 400px;
+          height: 400px;
+          border: 1px solid rgba(255, 255, 255, 0.06);
+          border-radius: 50%;
+          top: -50px;
+          right: -50px;
+        "
+      ></div>
+      <div
+        class="absolute animate-spin-slow"
+        style="
+          width: 320px;
+          height: 320px;
+          border: 1px dashed rgba(232, 160, 32, 0.15);
+          border-radius: 50%;
+          bottom: 20%;
+          left: -80px;
+        "
+      ></div>
+
+      <div
+        class="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 flex items-center"
+        style="min-height: 98vh"
+      >
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center py-16">
+          <!-- Left -->
+          <div>
+            <div
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-6 animate-fade-up"
+              style="
+                background: rgba(232, 160, 32, 0.15);
+                color: #e8a020;
+                border: 1px solid rgba(232, 160, 32, 0.3);
+              "
+            >
+              🇨🇳 ➜ 🌍 &nbsp; Chine vers l'Afrique Centrale & de l'Ouest
+            </div>
+            <h1
+              class="font-black leading-tight animate-fade-up delay-100"
+              style="
+                font-family: &quot;Syne&quot;, sans-serif;
+                font-size: clamp(36px, 6vw, 68px);
+                color: white;
+                margin-bottom: 24px;
+              "
+            >
+              Importez depuis la Chine,
+              <span
+                style="
+                  background: linear-gradient(135deg, #e8a020, #d62828);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                  background-clip: text;
+                "
+              >
+                sans vous déplacer.
+              </span>
+            </h1>
+            <p
+              class="text-lg animate-fade-up delay-200"
+              style="
+                color: rgba(255, 255, 255, 0.7);
+                max-width: 520px;
+                line-height: 1.8;
+                margin-bottom: 36px;
+              "
+            >
+              NAMM GLOBAL gère tout pour vous : sourcing, achat, transit et
+              livraison depuis la Chine vers votre pays. Envoyez-nous une photo
+              ou un lien, recevez votre devis en 24h.
+            </p>
+            <div class="flex flex-wrap gap-4 animate-fade-up delay-300">
+              <a
+                href="contact.html"
+                class="btn-primary"
+                style="font-size: 16px; padding: 14px 32px"
+              >
+                📩 Demander un devis
+              </a>
+              <a
+                href="dashboard.html"
+                class="btn-secondary"
+                style="
+                  color: white;
+                  border-color: rgba(255, 255, 255, 0.3);
+                  font-size: 16px;
+                  padding: 14px 32px;
+                "
+              >
+                📦 Mon espace
+              </a>
+            </div>
+
+            <!-- Trust badges -->
+            <div class="flex flex-wrap gap-6 mt-10 animate-fade-up delay-400">
+              <div
+                class="flex items-center gap-2 text-sm"
+                style="color: rgba(255, 255, 255, 0.6)"
+              >
+                <span
+                  class="w-5 h-5 rounded-full flex items-center justify-center text-xs"
+                  style="background: #2d7d46"
+                  >✓</span
+                >
+                Devis sous 24h
+              </div>
+              <div
+                class="flex items-center gap-2 text-sm"
+                style="color: rgba(255, 255, 255, 0.6)"
+              >
+                <span
+                  class="w-5 h-5 rounded-full flex items-center justify-center text-xs"
+                  style="background: #2d7d46"
+                  >✓</span
+                >
+                Suivi temps réel
+              </div>
+              <div
+                class="flex items-center gap-2 text-sm"
+                style="color: rgba(255, 255, 255, 0.6)"
+              >
+                <span
+                  class="w-5 h-5 rounded-full flex items-center justify-center text-xs"
+                  style="background: #2d7d46"
+                  >✓</span
+                >
+                Transitaires certifiés
+              </div>
+            </div>
+          </div>
+
+          <!-- Right – Quick Order Form -->
+          <div class="animate-fade-right delay-200">
+            <div
+              class="p-6 lg:p-8 rounded-3xl shadow-2xl"
+              style="
+                background: rgba(255, 255, 255, 0.97);
+                backdrop-filter: blur(20px);
+              "
+            >
+              <div class="text-center mb-6">
+                <div
+                  class="text-2xl font-bold mb-1"
+                  style="
+                    font-family: &quot;Syne&quot;, sans-serif;
+                    color: #1a1a2e;
+                  "
+                >
+                  Demande de devis rapide
+                </div>
+                <div class="text-sm" style="color: #8c7b6b">
+                  Réponse garantie sous 24h
+                </div>
+              </div>
+              <form id="quickOrderForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label
+                      class="text-xs font-semibold block mb-1"
+                      style="color: #5c5c6e"
+                      >Prénom</label
+                    >
+                    <input class="input" placeholder="Votre prénom" required />
+                  </div>
+                  <div>
+                    <label
+                      class="text-xs font-semibold block mb-1"
+                      style="color: #5c5c6e"
+                      >WhatsApp</label
+                    >
+                    <input
+                      class="input"
+                      placeholder="+237 XXX XXX XXX"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-semibold block mb-1"
+                    style="color: #5c5c6e"
+                    >Pays · Ville</label
+                  >
+                  <div class="grid grid-cols-2 gap-3">
+                    <input class="input" placeholder="ex: Cameroun" required />
+                    <input class="input" placeholder="ex: Yaoundé" required />
+                  </div>
+                </div>
+                <div>
+                  <label
+                    class="text-xs font-semibold block mb-1"
+                    style="color: #5c5c6e"
+                  >
+                    Lien du produit ou du panier
+                    <span class="font-normal" style="color: #8c7b6b">
+                      (1688, Taobao, Alibaba…)</span
+                    >
+                  </label>
+                  <textarea
+                    class="input"
+                    rows="3"
+                    placeholder="Ex : https://detail.1688.com/offer/...&#10;Ou décrivez le produit : couleur, taille, matière..."
+                    required
+                    style="resize: none"
+                  ></textarea>
+                </div>
+
+                <!-- Photo Upload Zone -->
+                <div>
+                  <label
+                    class="text-xs font-semibold block mb-1"
+                    style="color: #5c5c6e"
+                  >
+                    📸 Photos du produit
+                    <span class="font-normal" style="color: #8c7b6b">
+                      (optionnel – 5 max)</span
+                    >
+                  </label>
+                  <div
+                    id="heroDropZone"
+                    class="relative rounded-xl border-2 border-dashed transition-all duration-200 cursor-pointer"
+                    style="border-color: #e8ddd0; background: #fafafa"
+                    onclick="document.getElementById('heroPhotoInput').click()"
+                    ondragover="heroDragOver(event)"
+                    ondragleave="heroDragLeave(event)"
+                    ondrop="heroDrop(event)"
+                  >
+                    <div
+                      id="heroDropPlaceholder"
+                      class="flex items-center justify-center gap-3 py-4 px-3"
+                    >
+                      <div
+                        class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0"
+                        style="background: #f5f0e8"
+                      >
+                        📷
+                      </div>
+                      <div>
+                        <div
+                          class="text-xs font-semibold"
+                          style="color: #1a1a2e"
+                        >
+                          Glissez vos photos ici ou cliquez
+                        </div>
+                        <div class="text-xs" style="color: #8c7b6b">
+                          JPG, PNG · Max 5 Mo · 5 photos max
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      id="heroPreviewGrid"
+                      class="hidden p-3 grid grid-cols-5 gap-2"
+                    ></div>
+                    <input
+                      id="heroPhotoInput"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      class="hidden"
+                      onchange="heroPhotoSelect(event)"
+                    />
+                  </div>
+                  <div id="heroAddMore" class="hidden mt-1.5"></div>
+                </div>
+
+                <div>
+                  <label
+                    class="text-xs font-semibold block mb-1"
+                    style="color: #5c5c6e"
+                    >Quantité souhaitée</label
+                  >
+                  <input
+                    class="input"
+                    type="number"
+                    placeholder="Nombre d'unités"
+                    min="1"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="btn-primary w-full justify-center"
+                  style="padding: 14px; font-size: 15px"
+                >
+                  🚀 Envoyer ma demande
+                </button>
+                <p class="text-xs text-center" style="color: #8c7b6b">
+                  En soumettant, vous acceptez d'être contacté par NAMM GLOBAL
+                  via WhatsApp ou email.
+                </p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div
+        class="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 animate-bounce"
+        style="color: rgba(255, 255, 255, 0.4)"
+      >
+        <div class="text-xs">Défiler</div>
+        <div
+          style="width: 1px; height: 32px; background: rgba(255, 255, 255, 0.2)"
+        ></div>
+      </div>
+    </section>
+
+    <!-- STATS (dynamic) -->
+    <section
+      class="py-16"
+      style="background: white; border-bottom: 1px solid #e8ddd0"
+    >
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div
+          id="statsGrid"
+          class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"
+        ></div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="py-20" style="background: var(--bg)">
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="text-center mb-14 reveal">
+          <div class="section-tag">✨ Comment ça marche</div>
+          <h2 class="section-title">Simple comme un message WhatsApp</h2>
+          <p class="section-sub mx-auto">
+            Pas besoin d'être expert. En 3 étapes, votre commande est en route
+            depuis la Chine.
+          </p>
+        </div>
+        <div id="steps" class="grid md:grid-cols-3 gap-8"></div>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="py-20" style="background: white">
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="text-center mb-14 reveal">
+          <div class="section-tag">🛎️ Nos services</div>
+          <h2 class="section-title">Tout ce dont vous avez besoin</h2>
+        </div>
+        <div
+          id="services"
+          class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+      </div>
+    </section>
+
+    <!-- GALLERY PREVIEW -->
+    <!-- <section class="py-20" style="background: var(--bg)">
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="flex flex-wrap items-end justify-between gap-4 mb-12">
+          <div class="reveal">
+            <div class="section-tag">🖼️ Galerie</div>
+            <h2 class="section-title">Ils ont commandé, ils ont reçu</h2>
+            <p class="section-sub">
+              Des clients satisfaits, des produits livrés. Voyez par vous-même.
+            </p>
+          </div>
+          <a href="gallery.html" class="btn-secondary reveal">Voir tout →</a>
+        </div>
+        <div
+          id="galleryPreview"
+          class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        ></div>
+      </div>
+    </section> -->
+
+    <!-- LINKS GRID -->
+    <section
+      class="py-16"
+      style="background: white; border-top: 1px solid #e8ddd0"
+    >
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a
+            href="calendar.html"
+            class="card-flat reveal flex items-center gap-4 hover:scale-105 transition-transform"
+            style="border: 2px solid #e8a02020; background: #fff8ec"
+          >
+            <div class="text-3xl">📅</div>
+            <div>
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                Calendrier
+              </div>
+              <div class="text-xs" style="color: #8c7b6b">
+                Événements & vagues
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="pricing.html"
+            class="card-flat reveal flex items-center gap-4 hover:scale-105 transition-transform"
+            style="border: 2px solid #d6282820; background: #fff5f5"
+          >
+            <div class="text-3xl">💰</div>
+            <div>
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                Nos tarifs
+              </div>
+              <div class="text-xs" style="color: #8c7b6b">
+                Grille de prix complète
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="training.html"
+            class="card-flat reveal flex items-center gap-4 hover:scale-105 transition-transform"
+            style="border: 2px solid #6b21a820; background: #f5f3ff"
+          >
+            <div class="text-3xl">🎓</div>
+            <div>
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                Formation
+              </div>
+              <div class="text-xs" style="color: #8c7b6b">
+                Commander depuis la Chine
+              </div>
+            </div>
+          </a>
+
+          <a
+            href="community.html"
+            class="card-flat reveal flex items-center gap-4 hover:scale-105 transition-transform"
+            style="border: 2px solid #2d7d4620; background: #ecfdf5"
+          >
+            <div class="text-3xl">🌐</div>
+            <div>
+              <div
+                class="font-bold"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              >
+                Communauté
+              </div>
+              <div class="text-xs" style="color: #8c7b6b">
+                Telegram & WhatsApp
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHARE -->
+    <section
+      class="py-16"
+      style="background: var(--bg); border-top: 1px solid #e8ddd0"
+    >
+      <div class="max-w-3xl mx-auto px-4 text-center reveal">
+        <div class="section-tag mx-auto" style="width: fit-content">
+          📣 Partager
+        </div>
+        <h2 class="section-title">Recommandez NAMM GLOBAL</h2>
+        <p class="section-sub mx-auto mb-8">
+          Aidez vos proches à importer depuis la Chine. Partagez notre
+          plateforme !
+        </p>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button
+            data-share="whatsapp"
+            class="btn-primary"
+            style="background: linear-gradient(135deg, #25d366, #128c7e)"
+          >
+            📱 WhatsApp
+          </button>
+          <button
+            data-share="facebook"
+            class="btn-primary"
+            style="background: linear-gradient(135deg, #1877f2, #0d5cbf)"
+          >
+            📘 Facebook
+          </button>
+          <button
+            data-share="telegram"
+            class="btn-primary"
+            style="background: linear-gradient(135deg, #2aabee, #1a87bf)"
+          >
+            ✈️ Telegram
+          </button>
+          <button data-share="copy" class="btn-ghost">🔗 Copier le lien</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 lg:py-16">
+      <div class="max-w-7xl mx-auto px-4 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-10 mb-10">
+          <div class="md:col-span-2">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold shadow-lg"
+                style="background: linear-gradient(135deg, #d62828, #e8a020)"
+              >
+                NG
+              </div>
+              <div>
+                <div
+                  class="font-bold text-white"
+                  style="font-family: &quot;Syne&quot;, sans-serif"
+                >
+                  NAMM GLOBAL
+                </div>
+                <div class="text-xs" style="color: rgba(255, 255, 255, 0.5)">
+                  Import Chine – Afrique
+                </div>
+              </div>
+            </div>
+            <p
+              class="text-sm mb-6"
+              style="
+                color: rgba(255, 255, 255, 0.5);
+                max-width: 300px;
+                line-height: 1.8;
+              "
+            >
+              Votre partenaire de confiance pour importer depuis la Chine vers
+              l'Afrique Centrale et de l'Ouest.
+            </p>
+            <div class="flex gap-3">
+              <a
+                href="https://tiktok.com/@nammglobal"
+                target="_blank"
+                rel="noopener"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-colors hover:text-brand-gold"
+                style="background: rgba(255, 255, 255, 0.08)"
+                >🎵</a
+              >
+              <a
+                href="https://wa.me/237677123456"
+                target="_blank"
+                rel="noopener"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-colors hover:text-brand-gold"
+                style="background: rgba(255, 255, 255, 0.08)"
+                >📱</a
+              >
+              <a
+                href="https://facebook.com/nammglobal"
+                target="_blank"
+                rel="noopener"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-colors hover:text-brand-gold"
+                style="background: rgba(255, 255, 255, 0.08)"
+                >📘</a
+              >
+              <a
+                href="https://t.me/nammglobal"
+                target="_blank"
+                rel="noopener"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-sm transition-colors hover:text-brand-gold"
+                style="background: rgba(255, 255, 255, 0.08)"
+                >✈️</a
+              >
+            </div>
+          </div>
+          <div>
+            <div
+              class="text-xs font-bold uppercase tracking-wider mb-4"
+              style="color: rgba(255, 255, 255, 0.3)"
+            >
+              Navigation
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="index.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Accueil
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="dashboard.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Mes commandes
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="calendar.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Calendrier
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="pricing.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Tarifs
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="gallery.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Galerie
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div
+              class="text-xs font-bold uppercase tracking-wider mb-4"
+              style="color: rgba(255, 255, 255, 0.3)"
+            >
+              Services
+            </div>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a
+                  href="training.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Formation
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="community.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Communauté
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="contact.html"
+                  class="transition-colors"
+                  style="color: rgba(255, 255, 255, 0.6)"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+            <div class="mt-6">
+              <div
+                class="text-xs font-bold uppercase tracking-wider mb-3"
+                style="color: rgba(255, 255, 255, 0.3)"
+              >
+                TikTok
+              </div>
+              <a
+                href="https://tiktok.com/@nammglobal"
+                target="_blank"
+                rel="noopener"
+                class="inline-flex items-center gap-2 text-sm px-4 py-2 rounded-xl transition-colors"
+                style="
+                  background: rgba(255, 255, 255, 0.08);
+                  color: rgba(255, 255, 255, 0.7);
+                "
+              >
+                🎵 @nammglobal
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="pt-8"
+          style="border-top: 1px solid rgba(255, 255, 255, 0.1)"
+        >
+          <div
+            class="flex flex-wrap items-center justify-between gap-4 text-xs"
+            style="color: rgba(255, 255, 255, 0.3)"
+          >
+            <span>© 2025 NAMM GLOBAL. Tous droits réservés.</span>
+            <span
+              >🇨🇲 Cameroun · 🇨🇮 Côte d'Ivoire · 🇬🇦 Gabon · 🇨🇬 Congo · 🇸🇳 Sénégal
+              · et plus</span
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/mockdata.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/store.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/payment.js"></script>
+    <script>
+      // ── Hero Form – Photo Upload ─────────────────────────────
+      let heroFiles = [];
+      const HERO_MAX = 5,
+        HERO_MAX_MB = 5;
+
+      function heroDragOver(e) {
+        e.preventDefault();
+        const z = document.getElementById("heroDropZone");
+        z.style.borderColor = "#D62828";
+        z.style.background = "#FFF5F5";
+      }
+      function heroDragLeave() {
+        if (heroFiles.length === 0) {
+          const z = document.getElementById("heroDropZone");
+          z.style.borderColor = "#E8DDD0";
+          z.style.background = "#FAFAFA";
+        }
+      }
+      function heroDrop(e) {
+        e.preventDefault();
+        heroDragLeave();
+        heroAddFiles(
+          Array.from(e.dataTransfer.files).filter((f) =>
+            f.type.startsWith("image/"),
+          ),
+        );
+      }
+      function heroPhotoSelect(e) {
+        heroAddFiles(Array.from(e.target.files));
+        e.target.value = "";
+      }
+
+      function heroAddFiles(files) {
+        const rem = HERO_MAX - heroFiles.length;
+        if (rem <= 0) {
+          window.showToast?.("⚠️ Maximum 5 photos atteint.", "error");
+          return;
+        }
+        const toAdd = files.slice(0, rem);
+        const bad = toAdd.filter((f) => f.size > HERO_MAX_MB * 1024 * 1024);
+        if (bad.length)
+          window.showToast?.(
+            `⚠️ ${bad.length} photo(s) ignorées (> 5 Mo).`,
+            "error",
+          );
+        heroFiles = [
+          ...heroFiles,
+          ...toAdd.filter((f) => f.size <= HERO_MAX_MB * 1024 * 1024),
+        ];
+        heroRender();
+      }
+      function heroRemove(i) {
+        heroFiles.splice(i, 1);
+        heroRender();
+      }
+
+      function heroRender() {
+        const grid = document.getElementById("heroPreviewGrid");
+        const ph = document.getElementById("heroDropPlaceholder");
+        const more = document.getElementById("heroAddMore");
+        const zone = document.getElementById("heroDropZone");
+        if (!grid) return;
+
+        if (heroFiles.length === 0) {
+          grid.classList.add("hidden");
+          grid.classList.remove("grid");
+          ph.classList.remove("hidden");
+          more.classList.add("hidden");
+          zone.style.borderColor = "#E8DDD0";
+          zone.style.background = "#FAFAFA";
+          return;
+        }
+        ph.classList.add("hidden");
+        grid.classList.remove("hidden");
+        grid.classList.add("grid");
+        more.classList.remove("hidden");
+        zone.style.borderColor = "#D62828";
+        zone.style.background = "#FFF5F5";
+
+        grid.innerHTML =
+          heroFiles
+            .map(
+              (f, i) => `
+        <div class="relative group" style="aspect-ratio:1;">
+          <img src="${URL.createObjectURL(f)}" class="w-full h-full object-cover rounded-lg" style="border:2px solid #E8DDD0;">
+          <button type="button" onclick="heroRemove(${i})"
+                  class="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full flex items-center justify-center text-white shadow"
+                  style="background:#D62828;font-size:9px;opacity:0;transition:opacity 0.15s;"
+                  onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='0'">✕</button>
+        </div>`,
+            )
+            .join("") +
+          (heroFiles.length < HERO_MAX
+            ? `
+          <div onclick="document.getElementById('heroPhotoInput').click()"
+               class="flex items-center justify-center rounded-lg border-2 border-dashed cursor-pointer hover:bg-red-50 transition-colors"
+               style="aspect-ratio:1;border-color:#E8A020;">
+            <span style="color:#E8A020;font-size:18px;">＋</span>
+          </div>`
+            : "");
+
+        more.innerHTML = `<span class="text-xs font-semibold" style="color:#D62828;">
+        📸 ${heroFiles.length}/${HERO_MAX} photo${heroFiles.length > 1 ? "s" : ""}
+        ${
+          heroFiles.length < HERO_MAX
+            ? ' · <span class="underline cursor-pointer" onclick="document.getElementById(\'heroPhotoInput\').click()">Ajouter</span>'
+            : " · Max atteint"
+        }
+      </span>`;
+      }
+
+      // ── Quick Form: auth guard + FormData build ───────────────
+      document
+        .getElementById("quickOrderForm")
+        ?.addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          // Auth guard: redirect to login if not connected
+          if (!window.AUTH?.isLoggedIn()) {
+            sessionStorage.setItem("namm_redirect", "index.html");
+            window.location.href = "login.html";
+            return;
+          }
+
+          const btn = this.querySelector("button[type=submit]");
+          const orig = btn.innerHTML;
+          btn.innerHTML = "⏳ Envoi en cours…";
+          btn.disabled = true;
+
+          // Build FormData (ready for Flask backend)
+          const fd = new FormData(this);
+          // Attach user info from session
+          const user = window.AUTH.getCurrentUser();
+          if (user) {
+            fd.append("userId", user.id);
+            fd.append("userName", user.name);
+            fd.append("userPhone", user.phone);
+            fd.append("userEmail", user.email || "");
+            fd.append("userCountry", user.country);
+            fd.append("userCity", user.city);
+          }
+          // Attach photos
+          heroFiles.forEach((f, i) => fd.append("photo_" + i, f));
+
+          // -- Swap comment below for real fetch when Flask is ready --
+          // const res = await fetch('/api/quotes', { method: 'POST', body: fd });
+          // const data = await res.json();
+
+          // Mock: save to store
+          const productLinkEl = this.querySelector("textarea");
+          const qtyEl = this.querySelector('input[type="number"]');
+          await window.STORE?.orders.create({
+            userId: user?.id,
+            product: (productLinkEl?.value || "Commande rapide").slice(0, 80),
+            productLink: productLinkEl?.value || "",
+            quantity: parseInt(qtyEl?.value) || 1,
+            country: user?.country || "",
+            city: user?.city || "",
+          });
+
+          window.showToast?.(
+            "✅ Demande envoyée ! Devis sous 24h via WhatsApp.",
+            "success",
+          );
+          this.reset();
+          heroFiles = [];
+          heroRender();
+          btn.innerHTML = orig;
+          btn.disabled = false;
+        });
+    </script>
+    <script>
+      const steps = [
+        {
+          step: "01",
+          icon: "📸",
+          title: "Envoyez photo ou lien",
+          desc: "Trouvez votre produit sur 1688, Taobao, Alibaba ou envoyez simplement une photo. NAMM GLOBAL s'occupe du reste.",
+        },
+        {
+          step: "02",
+          icon: "💰",
+          title: "Recevez votre devis",
+          desc: "Sous 24h, vous recevez un devis complet : prix produit, frais de service, transport et douane. Aucune surprise.",
+        },
+        {
+          step: "03",
+          icon: "📦",
+          title: "Suivez votre commande",
+          desc: "Après validation, suivez votre commande en temps réel : transit Chine, expédition, douane, livraison finale.",
+        },
+      ];
+
+      document.getElementById("steps").innerHTML = steps
+        .map(
+          (s, i) => `
+      <div class="card p-8 reveal delay-${i + 1}00">
+        <div class="text-xs font-black tracking-widest mb-4" style="color:#E8A020;font-family:'DM Mono',monospace;">ÉTAPE ${s.step}</div>
+        <div class="text-4xl mb-4">${s.icon}</div>
+        <div class="text-xl font-bold mb-3" style="font-family:'Syne',sans-serif;color:#1A1A2E;">${s.title}</div>
+        <p class="text-sm leading-relaxed" style="color:#8C7B6B;">${s.desc}</p>
+      </div>
+    `,
+        )
+        .join("");
+    </script>
+    <script>
+      const services = [
+        {
+          icon: "🔍",
+          title: "Sourcing produits",
+          desc: "Recherche et vérification de fournisseurs fiables selon vos exigences qualité et budget.",
+        },
+        {
+          icon: "💼",
+          title: "Achat pour compte",
+          desc: "Nous achetons en votre nom sur toutes les plateformes chinoises (1688, Taobao, Alibaba, DHgate).",
+        },
+        {
+          icon: "✈️",
+          title: "Transport aérien",
+          desc: "Livraison rapide en 7-25 jours pour vos commandes urgentes ou légères.",
+        },
+        {
+          icon: "🚢",
+          title: "Fret maritime",
+          desc: "Solution économique pour les gros volumes et les marchandises lourdes.",
+        },
+        {
+          icon: "🛃",
+          title: "Dédouanement",
+          desc: "Gestion complète des formalités douanières avec nos transitaires partenaires certifiés.",
+        },
+        {
+          icon: "📱",
+          title: "Suivi digital",
+          desc: "Espace client dédié pour suivre toutes vos commandes en temps réel, 24h/24.",
+        },
+      ];
+
+      document.getElementById("services").innerHTML = services
+        .map(
+          (s, i) => `
+    <div class="card-flat reveal delay-${((i % 3) + 1) * 100} flex gap-4 items-start">
+      <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
+          style="background: var(--surface-alt)">
+          ${s.icon}
+      </div>
+
+      <div>
+        <div class="font-bold mb-1"
+            style="font-family:'Syne',sans-serif;color:#1a1a2e;">
+            ${s.title}
+        </div>
+
+        <p class="text-sm" style="color:#8c7b6b;line-height:1.7">
+            ${s.desc}
+        </p>
+      </div>
+    </div>
+    `,
+        )
+        .join("");
+    </script>
+
+    <script>
+      // ── Dynamic Stats ─────────────────────────────────────────
+      async function initDynamicStats() {
+        try {
+          const apiUrl = "http://127.0.0.1:5000/api";
+          const el = document.getElementById("statsGrid");
+          if (!el) return;
+
+          const response = await fetch(`${apiUrl}/stats`);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const stats = await response.json();
+          if (!stats?.data || !Array.isArray(stats.data))
+            throw new Error("Invalid API response");
+
+          const delays = ["", "delay-100", "delay-200", "delay-300"];
+
+          el.innerHTML = stats.data
+            .map((s, i) => {
+              const delay = delays[i] || "";
+              return `
+          <div class="text-center reveal ${delay}">
+            <div class="text-4xl lg:text-5xl font-black mb-2 gradient-text"
+                style="font-family:'Syne',sans-serif;"
+                data-count="${s.value}"
+                data-suffix="${s.suffix}">
+              ${Number(s.value).toLocaleString("fr-FR")}${s.suffix}
+            </div>
+            <div class="text-sm font-medium" style="color:#8C7B6B;">
+              ${s.label}
+            </div>
+          </div>`;
+            })
+            .join("");
+
+          // ── ré-observer les éléments reveal fraîchement injectés ──
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("visible");
+                  observer.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.1 },
+          );
+
+          el.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+
+          if (window.initCounters) window.initCounters();
+        } catch (error) {
+          console.error("initDynamicStats failed:", error);
+        }
+      }
+
+      // ── Dynamic Gallery Preview ───────────────────────────────
+      async function initGalleryPreview() {
+        const el = document.getElementById("galleryPreview");
+        if (!el) return;
+        const items = window.STORE
+          ? await window.STORE.gallery.getAll()
+          : window.GALLERY_ITEMS || [];
+        const preview = items.slice(0, 3);
+        const delays = ["delay-100", "delay-200", "delay-300"];
+        el.innerHTML = preview
+          .map(
+            (g, i) => `
+          <a href="gallery.html" class="card reveal ${delays[i]} block">
+            <div class="overflow-hidden relative" style="aspect-ratio:4/3;">
+              <img src="${g.thumb}" alt="${g.product}"
+                   class="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                   loading="lazy">
+              ${g.type === "video" ? '<div class="absolute inset-0 flex items-center justify-center"><div class="w-12 h-12 rounded-full flex items-center justify-center text-xl" style="background:rgba(0,0,0,0.5);color:white;">▶</div></div>' : ""}
+            </div>
+            <div class="p-4">
+              <div class="flex gap-0.5 mb-2">${"⭐".repeat(g.rating || 5)}</div>
+              <div class="text-sm font-semibold truncate" style="color:#1A1A2E;">${g.product}</div>
+              <div class="text-xs mt-1" style="color:#8C7B6B;">${g.client}</div>
+            </div>
+          </a>`,
+          )
+          .join("");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        initDynamicStats();
+        initGalleryPreview();
+      });
+    </script>
+  </body>
+</html>

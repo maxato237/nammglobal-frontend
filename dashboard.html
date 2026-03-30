@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Espace – NAMM GLOBAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:{red:'#D62828',gold:'#E8A020',dark:'#1A1A2E'}}}}}</script>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <div>
+        <div class="section-tag">📦 Espace Client</div>
+        <h1 class="section-title" style="margin-bottom:6px;">Mes Commandes</h1>
+        <p class="text-sm" style="color:#8C7B6B;">Suivez, gérez et répétez vos commandes depuis la Chine.</p>
+      </div>
+      <button id="newOrderBtn" class="btn-primary">➕ Nouvelle commande</button>
+    </div>
+
+    <div class="grid lg:grid-cols-4 gap-8">
+      <aside class="lg:col-span-1">
+        <div class="card mb-6" id="userCard">
+          <div class="p-6 text-center text-sm" style="color:#8C7B6B;">Chargement…</div>
+        </div>
+        <div class="card-flat">
+          <div class="text-xs font-bold uppercase tracking-wider mb-3" style="color:#8C7B6B;">Navigation rapide</div>
+          <nav class="space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium" style="background:#FFF5F5;color:#D62828;">📦 Mes commandes</a>
+            <a href="calendar.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition-all" style="color:#5C5C6E;">📅 Calendrier vagues</a>
+            <a href="pricing.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition-all" style="color:#5C5C6E;">💰 Tarifs</a>
+            <a href="profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 transition-all" style="color:#5C5C6E;">👤 Mon profil</a>
+          </nav>
+        </div>
+      </aside>
+
+      <main class="lg:col-span-3">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6" id="dashStats"></div>
+
+        <div class="card-flat mb-4">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <div class="relative flex-1">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm" style="color:#8C7B6B;">🔍</span>
+              <input id="orderSearch" class="input" style="padding-left:36px;" placeholder="Rechercher une commande…">
+            </div>
+            <div class="flex gap-2 flex-wrap">
+              <button data-filter="ALL"      class="filter-tab active">Toutes</button>
+              <button data-filter="PENDING"  class="filter-tab">⏳ Devis</button>
+              <button data-filter="SHIPPING" class="filter-tab">✈️ Transit</button>
+              <button data-filter="DELIVERED"class="filter-tab">✅ Livrées</button>
+              <button data-filter="ISSUE"    class="filter-tab">⚠️ Problème</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-flat mb-6">
+          <div id="waveFilterBar" class="flex flex-wrap items-center gap-2 min-h-[28px]"></div>
+        </div>
+
+        <div id="orderList" class="space-y-4"></div>
+      </main>
+    </div>
+  </div>
+
+  <div id="orderModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+       style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);"
+       onclick="if(event.target===this)closeModal()">
+    <div class="w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl"
+         style="background:white;max-height:90vh;overflow-y:auto;">
+      <div id="orderModalContent"></div>
+    </div>
+  </div>
+
+  <footer class="mt-16 py-8 text-center text-xs" style="color:#8C7B6B;border-top:1px solid #E8DDD0;">
+    © 2025 NAMM GLOBAL – Votre pont entre la Chine et l'Afrique
+  </footer>
+
+  <script src="assets/js/mockdata.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/payment.js"></script>
+  <script src="assets/js/notifications.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+  <script src="assets/js/openNewOrderDialog.js"></script>
+  <script>
+    window.AUTH.requireAuth('login.html');
+    // Handle ?action=neworder&wave=XXX from calendar
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('action') === 'neworder') {
+        const waveId = params.get('wave');
+        if (waveId) sessionStorage.setItem('namm_preselect_wave', waveId);
+        // Open dialog after short delay to let dashboard render
+        setTimeout(() => {
+          if (window.openNewOrderDialog) openNewOrderDialog();
+        }, 800);
+        // Clean URL
+        history.replaceState({}, '', 'dashboard.html');
+      }
+    });
+  </script>
+</body>
+</html>

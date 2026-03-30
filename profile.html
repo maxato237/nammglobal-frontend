@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Profil – NAMM GLOBAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:{red:'#D62828',gold:'#E8A020',dark:'#1A1A2E'}}}}}</script>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <div class="mb-8">
+      <a href="dashboard.html" class="text-sm font-medium transition-colors hover:text-red-600 flex items-center gap-1"
+         style="color:#8C7B6B;">← Retour à mes commandes</a>
+      <div class="section-tag mt-4" style="width:fit-content;">👤 Mon Profil</div>
+      <h1 class="section-title">Mes informations</h1>
+    </div>
+
+    <!-- Avatar card -->
+    <div class="card p-6 mb-6 flex items-center gap-5">
+      <div id="avatarCircle"
+           class="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-lg flex-shrink-0"
+           style="background:linear-gradient(135deg,#D62828,#E8A020);">?</div>
+      <div>
+        <div id="profileName" class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">—</div>
+        <div id="profileSince" class="text-sm mt-0.5" style="color:#8C7B6B;"></div>
+        <div id="completionBadge" class="mt-2 text-xs px-2 py-1 rounded-full inline-block font-semibold"></div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="card p-8">
+      <div id="successMsg" class="hidden mb-5 p-3 rounded-xl text-sm font-medium"
+           style="background:#ECFDF5;color:#2D7D46;border:1px solid #BBF7D0;"></div>
+      <div id="errorMsg" class="hidden mb-5 p-3 rounded-xl text-sm font-medium"
+           style="background:#FEE2E2;color:#D62828;border:1px solid #FECACA;"></div>
+
+      <form id="profileForm" class="space-y-5" novalidate>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Prénom *</label>
+            <input id="pFirstName" class="input" placeholder="Votre prénom" required>
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Nom *</label>
+            <input id="pLastName" class="input" placeholder="Votre nom" required>
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">
+            Numéro WhatsApp *
+            <span class="font-normal" style="color:#8C7B6B;">(identifiant de connexion)</span>
+          </label>
+          <input id="pPhone" class="input" type="tel" placeholder="+237 XXX XXX XXX"
+                 style="background:#F5F0E8;" readonly>
+        </div>
+
+        <div>
+          <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Email</label>
+          <input id="pEmail" class="input" type="email" placeholder="votre@email.com">
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Pays *</label>
+            <select id="pCountry" class="input" required>
+              <option value="">Sélectionnez</option>
+              <option>Cameroun</option><option>Côte d'Ivoire</option><option>Sénégal</option>
+              <option>Gabon</option><option>Congo</option><option>RDC</option><option>Mali</option>
+              <option>Burkina Faso</option><option>Niger</option><option>Bénin</option>
+              <option>Togo</option><option>Ghana</option><option>Nigeria</option>
+              <option>Guinée</option><option>Autres</option>
+            </select>
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Ville *</label>
+            <input id="pCity" class="input" placeholder="Votre ville" required>
+          </div>
+        </div>
+
+        <!-- Changer mot de passe -->
+        <div class="pt-4" style="border-top:1px solid #E8DDD0;">
+          <div class="text-sm font-bold mb-4" style="color:#1A1A2E;">🔑 Changer le mot de passe</div>
+          <div class="space-y-3">
+            <div class="relative">
+              <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Mot de passe actuel</label>
+              <input id="pCurrentPass" type="password" class="input w-full" placeholder="Mot de passe actuel"
+                     autocomplete="current-password" style="padding-right:44px;">
+              <button type="button" onclick="toggleVis('pCurrentPass',this)"
+                      class="absolute bottom-2.5 right-3" style="color:#8C7B6B;background:none;border:none;cursor:pointer;font-size:16px;">👁️</button>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div class="relative">
+                <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Nouveau mot de passe</label>
+                <input id="pNewPass" type="password" class="input w-full" placeholder="Nouveau mot de passe"
+                       autocomplete="new-password" style="padding-right:44px;">
+                <button type="button" onclick="toggleVis('pNewPass',this)"
+                        class="absolute bottom-2.5 right-3" style="color:#8C7B6B;background:none;border:none;cursor:pointer;font-size:16px;">👁️</button>
+              </div>
+              <div>
+                <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Confirmer</label>
+                <input id="pConfirmPass" type="password" class="input" placeholder="Confirmer"
+                       autocomplete="new-password">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary w-full justify-center" style="padding:14px;font-size:15px;">
+          💾 Enregistrer les modifications
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="mt-10 py-6 text-center text-xs" style="color:#8C7B6B;border-top:1px solid #E8DDD0;">
+    © 2025 NAMM GLOBAL
+  </footer>
+
+  <script src="assets/js/mockdata.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/store.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    window.AUTH.requireAuth('login.html');
+
+    function toggleVis(id, btn) {
+      const inp = document.getElementById(id);
+      const show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      btn.textContent = show ? '🙈' : '👁️';
+    }
+
+    function getInitials(name) {
+      return (name || '?').trim().split(' ').map(w => w[0]?.toUpperCase() || '').slice(0, 2).join('');
+    }
+
+    function loadProfileForm() {
+      const user = window.AUTH.getCurrentUser();
+      if (!user) return;
+
+      // Avatar
+      document.getElementById('avatarCircle').textContent = user.avatar || getInitials(user.name);
+      document.getElementById('profileName').textContent  = user.name || '—';
+      const joined = user.joined
+        ? new Date(user.joined).toLocaleDateString('fr-FR', { month:'long', year:'numeric' })
+        : '—';
+      document.getElementById('profileSince').textContent = 'Membre depuis ' + joined;
+
+      // Completion
+      const complete = window.STORE.users.isProfileComplete(user);
+      const badge    = document.getElementById('completionBadge');
+      badge.textContent = complete ? '✅ Profil complet' : '⚠️ Profil incomplet';
+      badge.style.background = complete ? '#ECFDF5' : '#FFFBEB';
+      badge.style.color      = complete ? '#2D7D46'  : '#D97706';
+
+      // Fill form
+      const [first, ...rest] = (user.name || '').split(' ');
+      document.getElementById('pFirstName').value = first || '';
+      document.getElementById('pLastName').value  = rest.join(' ') || '';
+      document.getElementById('pPhone').value     = user.phone || '';
+      document.getElementById('pEmail').value     = user.email || '';
+      document.getElementById('pCity').value      = user.city || '';
+      // Country select
+      const sel = document.getElementById('pCountry');
+      if (user.country) {
+        for (let opt of sel.options) {
+          if (opt.value === user.country) { opt.selected = true; break; }
+        }
+      }
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const btn  = this.querySelector('button[type=submit]');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '⏳ Enregistrement…';
+      btn.disabled  = true;
+
+      const user     = window.AUTH.getCurrentUser();
+      const firstName = document.getElementById('pFirstName').value.trim();
+      const lastName  = document.getElementById('pLastName').value.trim();
+      const email     = document.getElementById('pEmail').value.trim();
+      const country   = document.getElementById('pCountry').value;
+      const city      = document.getElementById('pCity').value.trim();
+      const newPass   = document.getElementById('pNewPass').value;
+      const confirm   = document.getElementById('pConfirmPass').value;
+
+      if (!firstName || !country || !city) {
+        showErr('Prénom, pays et ville sont obligatoires.');
+        btn.innerHTML = orig; btn.disabled = false; return;
+      }
+      if (newPass && newPass !== confirm) {
+        showErr('Les mots de passe ne correspondent pas.');
+        btn.innerHTML = orig; btn.disabled = false; return;
+      }
+      if (newPass && newPass.length < 6) {
+        showErr('Le mot de passe doit contenir au moins 6 caractères.');
+        btn.innerHTML = orig; btn.disabled = false; return;
+      }
+
+      const name    = [firstName, lastName].filter(Boolean).join(' ');
+      const initials = getInitials(name);
+      const updates  = { name, email, country, city, avatar: initials };
+      // Password change: in real app send to backend
+      // if (newPass) updates.password = newPass;
+
+      await new Promise(r => setTimeout(r, 600));
+      window.STORE.users.updateProfile(user.id, updates);
+
+      // Refresh avatar display
+      document.getElementById('avatarCircle').textContent = initials;
+      document.getElementById('profileName').textContent  = name;
+      const complete = window.STORE.users.isProfileComplete({ ...user, ...updates });
+      const badge    = document.getElementById('completionBadge');
+      badge.textContent = complete ? '✅ Profil complet' : '⚠️ Profil incomplet';
+      badge.style.background = complete ? '#ECFDF5' : '#FFFBEB';
+      badge.style.color      = complete ? '#2D7D46'  : '#D97706';
+
+      // Clear passwords
+      ['pCurrentPass','pNewPass','pConfirmPass'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+
+      showSuccess('✅ Profil mis à jour avec succès !');
+      btn.innerHTML = orig; btn.disabled = false;
+    });
+
+    function showSuccess(msg) {
+      const el = document.getElementById('successMsg');
+      el.textContent = msg; el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 4000);
+      document.getElementById('errorMsg').classList.add('hidden');
+    }
+    function showErr(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = '⚠️ ' + msg; el.classList.remove('hidden');
+      document.getElementById('successMsg').classList.add('hidden');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProfileForm);
+  </script>
+</body>
+</html>

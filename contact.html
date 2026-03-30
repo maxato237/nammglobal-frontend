@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact – NAMM GLOBAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:{red:'#D62828',gold:'#E8A020',dark:'#1A1A2E'}}}}}</script>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <div class="text-center mb-12 reveal">
+      <div class="section-tag mx-auto" style="width:fit-content;">✉️ Contactez-nous</div>
+      <h1 class="section-title">Parlons de votre commande</h1>
+      <p class="section-sub mx-auto">Envoyez-nous la photo ou le lien de votre produit et recevez votre devis sous 24h.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+
+      <!-- ── Formulaire ──────────────────────────────────── -->
+      <div class="lg:col-span-2 reveal">
+        <div class="card p-8">
+          <div class="text-xl font-bold mb-6" style="font-family:'Syne',sans-serif;color:#1A1A2E;">📩 Demande de devis</div>
+
+          <form id="contactForm" class="space-y-5">
+
+            <!-- Prénom / Nom -->
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Prénom *</label>
+                <input class="input" placeholder="Votre prénom" required>
+              </div>
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Nom *</label>
+                <input class="input" placeholder="Votre nom" required>
+              </div>
+            </div>
+
+            <!-- Email / WhatsApp -->
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Email *</label>
+                <input class="input" type="email" placeholder="votre@email.com" required>
+              </div>
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">WhatsApp *</label>
+                <input class="input" placeholder="+237 XXX XXX XXX" required>
+              </div>
+            </div>
+
+            <!-- Pays / Ville -->
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Pays *</label>
+                <select class="input" required>
+                  <option value="">Sélectionnez votre pays</option>
+                  <option>Cameroun</option>
+                  <option>Côte d'Ivoire</option>
+                  <option>Sénégal</option>
+                  <option>Gabon</option>
+                  <option>Congo</option>
+                  <option>RDC</option>
+                  <option>Mali</option>
+                  <option>Burkina Faso</option>
+                  <option>Niger</option>
+                  <option>Bénin</option>
+                  <option>Togo</option>
+                  <option>Ghana</option>
+                  <option>Nigeria</option>
+                  <option>Guinée</option>
+                  <option>Autres</option>
+                </select>
+              </div>
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Ville *</label>
+                <input class="input" placeholder="Votre ville" required>
+              </div>
+            </div>
+
+            <!-- Lien produit / panier -->
+            <div>
+              <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">
+                Lien du produit ou du panier *
+                <span class="font-normal ml-1" style="color:#8C7B6B;">(1688, Taobao, Alibaba, DHgate… ou décrivez le produit)</span>
+              </label>
+              <textarea
+                class="input" rows="4"
+                placeholder="Ex : https://detail.1688.com/offer/...&#10;Ex : https://item.taobao.com/...&#10;Ou décrivez précisément : couleur, taille, matière, référence..."
+                required style="resize:none;"></textarea>
+            </div>
+
+            <!-- ── Zone upload photos ──────────────────── -->
+            <div>
+              <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">
+                📸 Photos du produit
+                <span class="font-normal ml-1" style="color:#8C7B6B;">(optionnel – jusqu'à 5 photos)</span>
+              </label>
+
+              <div
+                id="dropZone"
+                class="relative rounded-2xl border-2 border-dashed transition-all duration-200 cursor-pointer"
+                style="border-color:#E8DDD0; background:#FEFCF8;"
+                onclick="document.getElementById('photoInput').click()"
+                ondragover="contactDragOver(event)"
+                ondragleave="contactDragLeave()"
+                ondrop="contactDrop(event)">
+
+                <!-- Placeholder état vide -->
+                <div id="dropPlaceholder" class="flex flex-col items-center justify-center py-8 px-4 text-center">
+                  <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-3"
+                       style="background:#F5F0E8;">📷</div>
+                  <div class="text-sm font-semibold mb-1" style="color:#1A1A2E;">Glissez vos photos ici</div>
+                  <div class="text-xs mb-3" style="color:#8C7B6B;">ou cliquez pour sélectionner depuis votre appareil</div>
+                  <div class="text-xs px-3 py-1 rounded-full" style="background:#F5F0E8;color:#8C7B6B;">
+                    JPG · PNG · WEBP &nbsp;·&nbsp; Max 5 Mo / photo &nbsp;·&nbsp; 5 photos max
+                  </div>
+                </div>
+
+                <!-- Grille de prévisualisation (masquée par défaut) -->
+                <div id="photoPreviewGrid" class="hidden p-4 grid grid-cols-3 sm:grid-cols-5 gap-3"></div>
+
+                <!-- Input fichier caché -->
+                <input
+                  id="photoInput"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  class="hidden"
+                  onchange="contactPhotoSelect(event)">
+              </div>
+
+              <!-- Compteur + lien ajouter (masqué par défaut) -->
+              <div id="photoCounter" class="hidden mt-2"></div>
+            </div>
+
+            <!-- Quantité / Transport -->
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Quantité souhaitée</label>
+                <input class="input" type="number" placeholder="Nombre d'unités" min="1">
+              </div>
+              <div>
+                <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Mode de transport préféré</label>
+                <select class="input">
+                  <option>Selon recommandation NAMM</option>
+                  <option>Avion (rapide)</option>
+                  <option>Mer (économique)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Message complémentaire -->
+            <div>
+              <label class="text-xs font-semibold block mb-1.5" style="color:#5C5C6E;">Message complémentaire</label>
+              <textarea
+                class="input" rows="3"
+                placeholder="Précisions sur la couleur, la taille, le modèle, ou toute autre information utile..."
+                style="resize:none;"></textarea>
+            </div>
+
+            <!-- Consentement -->
+            <div class="flex items-start gap-3">
+              <input type="checkbox" id="consent" required class="mt-1 flex-shrink-0">
+              <label for="consent" class="text-xs" style="color:#8C7B6B;">
+                J'accepte d'être contacté par NAMM GLOBAL via WhatsApp, email ou SMS pour recevoir mon devis et des informations sur mes commandes.
+              </label>
+            </div>
+
+            <!-- Bouton envoi -->
+            <button type="submit" class="btn-primary w-full justify-center" style="padding:14px;font-size:15px;">
+              🚀 Envoyer ma demande de devis
+            </button>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- ── Sidebar ─────────────────────────────────────── -->
+      <aside class="space-y-6">
+
+        <!-- Contacts directs -->
+        <div class="card-flat reveal">
+          <div class="font-bold mb-4" style="font-family:'Syne',sans-serif;color:#1A1A2E;">📞 Nous contacter</div>
+          <div class="space-y-3">
+            <a href="https://wa.me/237677123456" target="_blank" rel="noopener"
+               class="flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-gray-50 group">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:#E8F8F0;">📱</div>
+              <div>
+                <div class="text-xs font-semibold" style="color:#2D7D46;">WhatsApp</div>
+                <div class="text-sm font-bold group-hover:underline" style="color:#1A1A2E;">+237 677 123 456</div>
+              </div>
+            </a>
+            <a href="mailto:contact@nammglobal.com"
+               class="flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-gray-50 group">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:#EFF6FF;">✉️</div>
+              <div>
+                <div class="text-xs font-semibold" style="color:#1A5F8A;">Email</div>
+                <div class="text-sm font-bold group-hover:underline" style="color:#1A1A2E;">contact@nammglobal.com</div>
+              </div>
+            </a>
+            <a href="https://tiktok.com/@nammglobal" target="_blank" rel="noopener"
+               class="flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-gray-50 group">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0" style="background:#F9F0FF;">🎵</div>
+              <div>
+                <div class="text-xs font-semibold" style="color:#6B21A8;">TikTok</div>
+                <div class="text-sm font-bold group-hover:underline" style="color:#1A1A2E;">@nammglobal</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Zones couvertes -->
+        <div class="card-flat reveal delay-100">
+          <div class="font-bold mb-4" style="font-family:'Syne',sans-serif;color:#1A1A2E;">🌍 Zones couvertes</div>
+          <div class="grid grid-cols-2 gap-2">
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇨🇲 Cameroun</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇨🇮 Côte d'Ivoire</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇸🇳 Sénégal</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇬🇦 Gabon</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇨🇬 Congo</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇲🇱 Mali</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇧🇫 Burkina Faso</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇬🇭 Ghana</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🇳🇬 Nigeria</div>
+            <div class="px-2 py-1.5 rounded-lg text-xs" style="background:#F5F0E8;color:#5C5C6E;">🌍 Et plus</div>
+          </div>
+        </div>
+
+        <!-- Disponibilité -->
+        <div class="card-flat reveal delay-200">
+          <div class="font-bold mb-3" style="font-family:'Syne',sans-serif;color:#1A1A2E;">⏰ Disponibilité</div>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <span style="color:#8C7B6B;">Lun – Ven</span>
+              <span class="font-semibold" style="color:#1A1A2E;">8h – 20h (WAT)</span>
+            </div>
+            <div class="flex justify-between">
+              <span style="color:#8C7B6B;">Samedi</span>
+              <span class="font-semibold" style="color:#1A1A2E;">9h – 18h</span>
+            </div>
+            <div class="flex justify-between">
+              <span style="color:#8C7B6B;">Dimanche</span>
+              <span class="font-semibold" style="color:#8C7B6B;">Fermé</span>
+            </div>
+          </div>
+          <div class="mt-3 p-2.5 rounded-xl text-xs text-center font-semibold" style="background:#ECFDF5;color:#2D7D46;">
+            ✅ Devis sous 24h garanti (jours ouvrables)
+          </div>
+        </div>
+
+        <!-- Réseaux sociaux -->
+        <div class="card-flat reveal delay-300">
+          <div class="font-bold mb-4" style="font-family:'Syne',sans-serif;color:#1A1A2E;">🔗 Réseaux sociaux</div>
+          <div class="grid grid-cols-4 gap-2">
+            <a href="https://tiktok.com/@nammglobal" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors text-center"
+               style="border:1px solid #E8DDD0;">
+              <span class="text-xl">🎵</span>
+              <span class="text-xs font-semibold" style="color:#5C5C6E;">TikTok</span>
+            </a>
+            <a href="https://facebook.com/nammglobal" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors text-center"
+               style="border:1px solid #E8DDD0;">
+              <span class="text-xl">📘</span>
+              <span class="text-xs font-semibold" style="color:#5C5C6E;">Facebook</span>
+            </a>
+            <a href="https://t.me/nammglobal" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors text-center"
+               style="border:1px solid #E8DDD0;">
+              <span class="text-xl">✈️</span>
+              <span class="text-xs font-semibold" style="color:#5C5C6E;">Telegram</span>
+            </a>
+            <a href="https://wa.me/237677123456" target="_blank" rel="noopener"
+               class="flex flex-col items-center gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors text-center"
+               style="border:1px solid #E8DDD0;">
+              <span class="text-xl">📱</span>
+              <span class="text-xs font-semibold" style="color:#5C5C6E;">WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+      </aside>
+    </div>
+
+    <!-- ── FAQ ────────────────────────────────────────────── -->
+    <div class="mt-16 reveal">
+      <div class="text-center mb-8">
+        <div class="section-tag mx-auto" style="width:fit-content;">❓ FAQ</div>
+        <h2 class="section-title">Questions fréquentes</h2>
+      </div>
+      <div class="max-w-3xl mx-auto space-y-3">
+
+        <div class="card overflow-hidden">
+          <button onclick="toggleFaq(0)" class="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-sm" style="color:#1A1A2E;">Combien de temps pour recevoir mon devis ?</span>
+            <span class="faq-icon text-lg flex-shrink-0" id="faq-icon-0">+</span>
+          </button>
+          <div class="faq-body hidden px-5 pb-5" id="faq-body-0">
+            <p class="text-sm" style="color:#8C7B6B;line-height:1.8;">Sous 24h pour toute demande reçue en jours ouvrables (lundi–vendredi). Le week-end, délai de 48h maximum.</p>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <button onclick="toggleFaq(1)" class="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-sm" style="color:#1A1A2E;">Quels types de produits pouvez-vous importer ?</span>
+            <span class="faq-icon text-lg flex-shrink-0" id="faq-icon-1">+</span>
+          </button>
+          <div class="faq-body hidden px-5 pb-5" id="faq-body-1">
+            <p class="text-sm" style="color:#8C7B6B;line-height:1.8;">Textile, électronique, chaussures, cosmétiques, ustensiles, bijoux, jouets, matériaux et bien plus. Contactez-nous pour toute demande spécifique.</p>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <button onclick="toggleFaq(2)" class="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-sm" style="color:#1A1A2E;">Comment se passe le paiement ?</span>
+            <span class="faq-icon text-lg flex-shrink-0" id="faq-icon-2">+</span>
+          </button>
+          <div class="faq-body hidden px-5 pb-5" id="faq-body-2">
+            <p class="text-sm" style="color:#8C7B6B;line-height:1.8;">Vous payez 50 % d'avance après validation du devis, le solde à la livraison. Modes acceptés : Mobile Money (MTN, Orange), virement bancaire.</p>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <button onclick="toggleFaq(3)" class="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-sm" style="color:#1A1A2E;">Pouvez-vous livrer dans toute l'Afrique ?</span>
+            <span class="faq-icon text-lg flex-shrink-0" id="faq-icon-3">+</span>
+          </button>
+          <div class="faq-body hidden px-5 pb-5" id="faq-body-3">
+            <p class="text-sm" style="color:#8C7B6B;line-height:1.8;">Nous couvrons principalement l'Afrique Centrale et de l'Ouest. Contactez-nous pour votre pays spécifique.</p>
+          </div>
+        </div>
+
+        <div class="card overflow-hidden">
+          <button onclick="toggleFaq(4)" class="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-sm" style="color:#1A1A2E;">Que se passe-t-il si le produit est endommagé ?</span>
+            <span class="faq-icon text-lg flex-shrink-0" id="faq-icon-4">+</span>
+          </button>
+          <div class="faq-body hidden px-5 pb-5" id="faq-body-4">
+            <p class="text-sm" style="color:#8C7B6B;line-height:1.8;">Tous les colis sont assurés. En cas de dommage, nous gérons le litige avec le fournisseur et vous remboursons ou réexpédions.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /max-w-7xl -->
+
+  <footer class="mt-16 py-8 text-center text-xs" style="color:#8C7B6B;border-top:1px solid #E8DDD0;">
+    © 2025 NAMM GLOBAL · <a href="index.html" style="color:#D62828;">nammglobal.com</a> · Tous droits réservés
+  </footer>
+
+  <script src="assets/js/mockdata.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    // ══════════════════════════════════════════════════════════
+    // Photo Upload – Contact Form
+    // IDs HTML : #dropZone  #dropPlaceholder  #photoPreviewGrid
+    //            #photoInput  #photoCounter
+    // ══════════════════════════════════════════════════════════
+
+    const CONTACT_MAX    = 5;
+    const CONTACT_MAX_MB = 5;
+    let   contactFiles   = [];
+
+    // Raccourci getElementById
+    const $c = id => document.getElementById(id);
+
+    // ── Drag & Drop ──────────────────────────────────────────
+    function contactDragOver(e) {
+      e.preventDefault();
+      $c('dropZone').style.borderColor = '#D62828';
+      $c('dropZone').style.background  = '#FFF5F5';
+    }
+
+    function contactDragLeave() {
+      if (contactFiles.length === 0) {
+        $c('dropZone').style.borderColor = '#E8DDD0';
+        $c('dropZone').style.background  = '#FEFCF8';
+      }
+    }
+
+    function contactDrop(e) {
+      e.preventDefault();
+      contactDragLeave();
+      contactAddFiles(
+        Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
+      );
+    }
+
+    // ── Sélection via input[file] ────────────────────────────
+    function contactPhotoSelect(e) {
+      contactAddFiles(Array.from(e.target.files));
+      e.target.value = ''; // permet de re-sélectionner le même fichier
+    }
+
+    // ── Ajout + validation ───────────────────────────────────
+    function contactAddFiles(newFiles) {
+      const remaining = CONTACT_MAX - contactFiles.length;
+
+      if (remaining <= 0) {
+        window.showToast?.('⚠️ Maximum 5 photos atteint.', 'error');
+        return;
+      }
+
+      const candidates = newFiles.slice(0, remaining);
+      const oversized  = candidates.filter(f => f.size > CONTACT_MAX_MB * 1024 * 1024);
+      const valid      = candidates.filter(f => f.size <= CONTACT_MAX_MB * 1024 * 1024);
+
+      if (oversized.length) {
+        window.showToast?.(
+          `⚠️ ${oversized.length} photo(s) ignorée(s) – taille supérieure à ${CONTACT_MAX_MB} Mo.`,
+          'error'
+        );
+      }
+
+      contactFiles = [...contactFiles, ...valid];
+      contactRenderPreviews();
+    }
+
+    // ── Supprimer une vignette ───────────────────────────────
+    function contactRemovePhoto(index) {
+      contactFiles.splice(index, 1);
+      contactRenderPreviews();
+    }
+
+    // ── Rendu complet de la zone upload ─────────────────────
+    function contactRenderPreviews() {
+      const zone        = $c('dropZone');
+      const placeholder = $c('dropPlaceholder');
+      const grid        = $c('photoPreviewGrid');
+      const counter     = $c('photoCounter');
+
+      // État vide : réafficher le placeholder
+      if (contactFiles.length === 0) {
+        placeholder.classList.remove('hidden');
+        grid.classList.add('hidden');
+        grid.classList.remove('grid');
+        counter.classList.add('hidden');
+        zone.style.borderColor = '#E8DDD0';
+        zone.style.background  = '#FEFCF8';
+        return;
+      }
+
+      // État rempli : masquer le placeholder, afficher la grille
+      placeholder.classList.add('hidden');
+      grid.classList.remove('hidden');
+      grid.classList.add('grid');
+      counter.classList.remove('hidden');
+      zone.style.borderColor = '#D62828';
+      zone.style.background  = '#FFF5F5';
+
+      // Vignettes
+      grid.innerHTML = contactFiles.map((file, i) => {
+        const url    = URL.createObjectURL(file);
+        const sizeMB = (file.size / 1024 / 1024).toFixed(1);
+        return `
+          <div class="relative group" style="aspect-ratio:1;">
+            <img
+              src="${url}" alt=""
+              class="w-full h-full object-cover rounded-xl"
+              style="border:2px solid #E8DDD0;">
+            <button
+              type="button"
+              onclick="contactRemovePhoto(${i})"
+              class="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center
+                     justify-center text-white text-xs shadow-md"
+              style="background:#D62828; opacity:0; transition:opacity 0.15s;"
+              onmouseenter="this.style.opacity='1'"
+              onmouseleave="this.style.opacity='0'">✕</button>
+            <div class="absolute bottom-1 left-1 right-1 text-center pointer-events-none">
+              <span class="rounded px-1"
+                    style="background:rgba(0,0,0,0.55); color:white; font-size:9px;">
+                ${sizeMB} Mo
+              </span>
+            </div>
+          </div>`;
+      }).join('');
+
+      // Slot "+" si de la place reste
+      if (contactFiles.length < CONTACT_MAX) {
+        grid.innerHTML += `
+          <div
+            onclick="document.getElementById('photoInput').click()"
+            class="flex items-center justify-center rounded-xl border-2 border-dashed
+                   cursor-pointer hover:bg-red-50 transition-colors"
+            style="aspect-ratio:1; border-color:#E8A020;">
+            <span class="text-3xl" style="color:#E8A020;">＋</span>
+          </div>`;
+      }
+
+      // Compteur sous la zone
+      const n    = contactFiles.length;
+      const link = contactFiles.length < CONTACT_MAX
+        ? `&nbsp;·&nbsp;<span class="underline cursor-pointer"
+             onclick="document.getElementById('photoInput').click()">
+             Ajouter d'autres
+           </span>`
+        : `&nbsp;·&nbsp;<span style="color:#8C7B6B;">Maximum atteint</span>`;
+
+      counter.innerHTML = `
+        <span class="text-xs font-semibold" style="color:#D62828;">
+          📸 ${n}/${CONTACT_MAX} photo${n > 1 ? 's' : ''} sélectionnée${n > 1 ? 's' : ''}${link}
+        </span>`;
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Soumission du formulaire
+    // ══════════════════════════════════════════════════════════
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const btn  = this.querySelector('button[type=submit]');
+      const orig = btn.innerHTML;
+      btn.innerHTML = '⏳ Envoi en cours…';
+      btn.disabled  = true;
+
+      // Simulation envoi (remplacer par fetch + FormData en production)
+      setTimeout(() => {
+        window.showToast(
+          '✅ Demande envoyée ! Nous vous contactons sous 24h via WhatsApp.',
+          'success'
+        );
+        this.reset();
+        // Vider aussi les photos
+        contactFiles = [];
+        contactRenderPreviews();
+        btn.innerHTML = orig;
+        btn.disabled  = false;
+      }, 1500);
+    });
+
+    // ══════════════════════════════════════════════════════════
+    // FAQ accordion
+    // ══════════════════════════════════════════════════════════
+    function toggleFaq(i) {
+      const body    = $c(`faq-body-${i}`);
+      const icon    = $c(`faq-icon-${i}`);
+      const wasOpen = !body.classList.contains('hidden');
+
+      // Tout fermer
+      document.querySelectorAll('.faq-body').forEach(b => b.classList.add('hidden'));
+      document.querySelectorAll('.faq-icon').forEach(ic => {
+        ic.textContent     = '+';
+        ic.style.transform = '';
+      });
+
+      // Ouvrir si était fermé
+      if (!wasOpen) {
+        body.classList.remove('hidden');
+        icon.textContent     = '−';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+
+    // ══════════════════════════════════════════════════════════
+    // Scroll reveal
+    // ══════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.05 });
+
+      document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    });
+  </script>
+
+</body>
+</html>

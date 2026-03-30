@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion – NAMM GLOBAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:{red:'#D62828',gold:'#E8A020',dark:'#1A1A2E'}}}}}</script>
+  <style>
+    .auth-bg {
+      background: linear-gradient(135deg, #1A1A2E 0%, #2d1b1b 50%, #1A1A2E 100%);
+      min-height: 100vh;
+    }
+    .auth-card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+    }
+    .phone-flag {
+      background: #F5F0E8;
+      border: 1.5px solid #E8DDD0;
+      border-right: none;
+      border-radius: 10px 0 0 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #5C5C6E;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .phone-input {
+      border-radius: 0 10px 10px 0 !important;
+      border-left: none !important;
+    }
+    .phone-input:focus {
+      border-color: #D62828 !important;
+      box-shadow: 0 0 0 3px rgba(214,40,40,0.1) !important;
+    }
+    .toggle-pass {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #8C7B6B;
+      font-size: 16px;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .toggle-pass:hover { color: #D62828; }
+
+    /* Animated background orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.15;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .orb-1 { width:300px;height:300px;background:#D62828;top:-80px;right:-80px;animation-delay:0s; }
+    .orb-2 { width:200px;height:200px;background:#E8A020;bottom:60px;left:-60px;animation-delay:3s; }
+    @keyframes orbFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%      { transform: translate(20px,-20px) scale(1.05); }
+    }
+  </style>
+</head>
+<body style="padding-top:0;">
+
+  <div class="auth-bg relative flex items-center justify-center px-4 py-10 overflow-hidden">
+    <!-- Orbs décoratifs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="w-full max-w-md relative z-10">
+
+      <!-- Logo -->
+      <a href="index.html" class="flex items-center justify-center gap-3 mb-8 group">
+        <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
+             style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
+        <div class="text-left">
+          <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;line-height:1.1;">NAMM GLOBAL</div>
+          <div class="text-xs" style="color:rgba(255,255,255,0.5);">Import Chine · Afrique</div>
+        </div>
+      </a>
+
+      <!-- Card -->
+      <div class="auth-card p-8 lg:p-10">
+
+        <div class="text-center mb-8">
+          <h1 class="text-2xl font-black mb-1" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Bienvenue 👋</h1>
+          <p class="text-sm" style="color:#8C7B6B;">Connectez-vous à votre espace NAMM GLOBAL</p>
+        </div>
+
+        <!-- Message d'erreur -->
+        <div id="errorMsg" class="hidden mb-5 p-3 rounded-xl text-sm font-medium"
+             style="background:#FEE2E2;color:#D62828;border:1px solid #FECACA;">
+        </div>
+
+        <!-- Formulaire -->
+        <form id="loginForm" class="space-y-5" novalidate>
+
+          <!-- Numéro de téléphone -->
+          <div>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">
+              Numéro de téléphone
+            </label>
+            <div class="flex">
+              <div class="phone-flag">
+                <span>🌍</span>
+                <select id="countryCode"
+                        class="bg-transparent border-none outline-none text-xs font-semibold cursor-pointer"
+                        style="color:#5C5C6E;max-width:80px;">
+                  <option value="+237">🇨🇲 +237</option>
+                  <option value="+225">🇨🇮 +225</option>
+                  <option value="+221">🇸🇳 +221</option>
+                  <option value="+241">🇬🇦 +241</option>
+                  <option value="+242">🇨🇬 +242</option>
+                  <option value="+243">🇨🇩 +243</option>
+                  <option value="+223">🇲🇱 +223</option>
+                  <option value="+226">🇧🇫 +226</option>
+                  <option value="+227">🇳🇪 +227</option>
+                  <option value="+229">🇧🇯 +229</option>
+                  <option value="+228">🇹🇬 +228</option>
+                  <option value="+233">🇬🇭 +233</option>
+                  <option value="+234">🇳🇬 +234</option>
+                  <option value="+224">🇬🇳 +224</option>
+                </select>
+              </div>
+              <input
+                id="phoneInput"
+                type="tel"
+                class="input phone-input flex-1"
+                placeholder="XXX XXX XXX"
+                autocomplete="tel"
+                required>
+            </div>
+          </div>
+
+          <!-- Mot de passe -->
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold" style="color:#5C5C6E;">Mot de passe</label>
+              <a href="forgot-password.html" class="text-xs font-semibold transition-colors"
+                 style="color:#D62828;">Mot de passe oublié ?</a>
+            </div>
+            <div class="relative">
+              <input
+                id="passwordInput"
+                type="password"
+                class="input w-full"
+                placeholder="Votre mot de passe"
+                autocomplete="current-password"
+                required
+                style="padding-right:44px;">
+              <button type="button" class="toggle-pass" id="togglePass" title="Afficher / masquer">
+                👁️
+              </button>
+            </div>
+          </div>
+
+          <!-- Se souvenir de moi -->
+          <div class="flex items-center justify-between">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <div class="relative">
+                <input type="checkbox" id="rememberMe" class="sr-only peer">
+                <div class="w-10 h-5 rounded-full transition-colors peer-checked:bg-red-600"
+                     style="background:#E8DDD0;"></div>
+                <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform
+                            peer-checked:translate-x-5"></div>
+              </div>
+              <span class="text-sm" style="color:#5C5C6E;">Se souvenir de moi</span>
+            </label>
+          </div>
+
+          <!-- Bouton connexion -->
+          <button type="submit" id="loginBtn"
+                  class="btn-primary w-full justify-center"
+                  style="padding:14px;font-size:15px;">
+            🔐 Se connecter
+          </button>
+
+        </form>
+
+        <div class="divider my-6"></div>
+
+        <!-- Lien inscription -->
+        <p class="text-center text-sm" style="color:#8C7B6B;">
+          Pas encore de compte ?
+          <a href="register.html" class="font-bold transition-colors" style="color:#D62828;">
+            Créer un compte →
+          </a>
+        </p>
+
+        <!-- Info compte test -->
+        <div class="mt-5 p-3 rounded-xl text-xs" style="background:#F5F0E8;color:#8C7B6B;">
+          <div class="font-semibold mb-1" style="color:#5C5C6E;">💡 Compte de démonstration</div>
+          <div>📱 Tél : <strong style="color:#1A1A2E;">677 123 456</strong> &nbsp;·&nbsp; 🔑 Mdp : <strong style="color:#1A1A2E;">namm2025</strong></div>
+        </div>
+
+      </div>
+
+      <!-- Retour accueil -->
+      <p class="text-center mt-6 text-sm" style="color:rgba(255,255,255,0.5);">
+        <a href="index.html" style="color:rgba(255,255,255,0.6);">← Retour à l'accueil</a>
+      </p>
+    </div>
+  </div>
+
+  <script src="assets/js/auth.js"></script>
+  <script>
+    // Rediriger si déjà connecté
+    document.addEventListener('DOMContentLoaded', () => {
+      window.AUTH.redirectIfLoggedIn('dashboard.html');
+    });
+
+    // Toggle mot de passe
+    document.getElementById('togglePass').addEventListener('click', function() {
+      const input = document.getElementById('passwordInput');
+      const isPass = input.type === 'password';
+      input.type = isPass ? 'text' : 'password';
+      this.textContent = isPass ? '🙈' : '👁️';
+    });
+
+    // Soumission
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const countrySelect = document.getElementById('countryCode').value;
+      const phoneLocal    = document.getElementById('phoneInput').value.trim();
+      const password = document.getElementById('passwordInput').value;
+      const remember = document.getElementById('rememberMe').checked;
+      const errDiv   = document.getElementById('errorMsg');
+      const btn      = document.getElementById('loginBtn');
+
+      const phone = countrySelect + window.AUTH.normalizePhone(phoneLocal);
+
+      if (!phone || !password) {
+        showError('Veuillez remplir tous les champs.');
+        return;
+      }
+
+      btn.innerHTML = '⏳ Connexion…';
+      btn.disabled  = true;
+
+      setTimeout(() => {
+        const result = window.AUTH.loginUser(phone, password, remember);
+
+        if (result.ok) {
+          localStorage.setItem("accessToken", result.accessToken);
+          localStorage.setItem("refreshToken", result.refreshToken);
+          btn.innerHTML = '✅ Connecté !';
+          btn.style.background = 'linear-gradient(135deg,#2D7D46,#1a5c32)';
+          setTimeout(() => window.AUTH.redirectAfterLogin(), 600);
+        } else {
+          showError(result.error);
+          btn.innerHTML = '🔐 Se connecter';
+          btn.disabled  = false;
+          // Secouer le formulaire
+          document.getElementById('loginForm').style.animation = 'shake 0.4s ease';
+          setTimeout(() => document.getElementById('loginForm').style.animation = '', 400);
+        }
+      }, 700);
+    });
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = '⚠️ ' + msg;
+      el.classList.remove('hidden');
+    }
+  </script>
+
+  <style>
+    @keyframes shake {
+      0%,100% { transform:translateX(0); }
+      20%      { transform:translateX(-8px); }
+      40%      { transform:translateX(8px); }
+      60%      { transform:translateX(-5px); }
+      80%      { transform:translateX(5px); }
+    }
+  </style>
+</body>
+</html>

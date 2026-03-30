@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendrier – NAMM GLOBAL</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: { red: "#D62828", gold: "#E8A020", dark: "#1A1A2E" },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body>
+    <div id="nav-container"></div>
+
+    <div class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+      <div class="text-center mb-10 reveal">
+        <div class="section-tag mx-auto" style="width: fit-content">
+          📅 Planning
+        </div>
+        <h1 class="section-title">Calendrier des Commandes</h1>
+        <p class="section-sub mx-auto">
+          Planifiez vos achats en tenant compte des événements chinois et des
+          vagues de commandes.
+        </p>
+      </div>
+
+      <!-- Toggle View -->
+      <div class="flex justify-center mb-8 reveal">
+        <div class="flex p-1.5 rounded-2xl gap-1" style="background: #f5f0e8">
+          <button
+            data-view="full"
+            class="filter-tab active px-6 py-2.5 transition-all"
+            style="background: #d62828; color: white; border-color: #d62828"
+          >
+            📋 Calendrier complet
+          </button>
+          <button
+            data-view="simplified"
+            class="filter-tab px-6 py-2.5"
+            style="
+              color: #8c7b6b;
+              background: transparent;
+              border-color: transparent;
+            "
+          >
+            📆 Vagues simplifiées
+          </button>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Events List -->
+        <div class="lg:col-span-2">
+          <div id="eventsList" class="space-y-4"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+          <!-- Mini Calendar -->
+          <div class="card-flat">
+            <div class="flex items-center justify-between mb-4">
+              <button
+                id="prevMonth"
+                class="w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center text-sm"
+              >
+                ←
+              </button>
+              <div
+                class="font-bold text-sm"
+                id="calMonthLabel"
+                style="
+                  font-family: &quot;Syne&quot;, sans-serif;
+                  color: #1a1a2e;
+                "
+              ></div>
+              <button
+                id="nextMonth"
+                class="w-8 h-8 rounded-lg hover:bg-gray-100 transition-colors flex items-center justify-center text-sm"
+              >
+                →
+              </button>
+            </div>
+            <div class="grid grid-cols-7 mb-2">
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                L
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                M
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                M
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                J
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                V
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                S
+              </div>
+              <div
+                class="text-center text-xs font-bold py-1"
+                style="color: #8c7b6b"
+              >
+                D
+              </div>
+            </div>
+            <div id="miniCalendar" class="grid grid-cols-7 gap-0.5"></div>
+
+            <!-- Legend -->
+            <div
+              class="mt-4 pt-4 space-y-2"
+              style="border-top: 1px solid #e8ddd0"
+            >
+              <div
+                class="text-xs font-bold uppercase tracking-wider mb-2"
+                style="color: #8c7b6b"
+              >
+                Légende
+              </div>
+
+              <div
+                class="flex items-center gap-2 text-xs"
+                style="color: #5c5c6e"
+              >
+                <div
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  style="background: #d62828"
+                ></div>
+                Fermeture majeure
+              </div>
+
+              <div
+                class="flex items-center gap-2 text-xs"
+                style="color: #5c5c6e"
+              >
+                <div
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  style="background: #e8a020"
+                ></div>
+                Jour férié
+              </div>
+
+              <div
+                class="flex items-center gap-2 text-xs"
+                style="color: #5c5c6e"
+              >
+                <div
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  style="background: #6b21a8"
+                ></div>
+                Événement shopping
+              </div>
+
+              <div
+                class="flex items-center gap-2 text-xs"
+                style="color: #5c5c6e"
+              >
+                <div
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  style="background: #2d7d46"
+                ></div>
+                Foire commerciale
+              </div>
+
+              <div
+                class="flex items-center gap-2 text-xs"
+                style="color: #5c5c6e"
+              >
+                <div
+                  class="w-2.5 h-2.5 rounded-full flex-shrink-0"
+                  style="background: #1a5f8a"
+                ></div>
+                Date limite vague
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div
+            class="card-flat text-center"
+            style="background: linear-gradient(135deg, #1a1a2e, #2d1b1b)"
+          >
+            <div class="text-3xl mb-3">🚀</div>
+            <div
+              class="font-bold text-white mb-2"
+              style="font-family: &quot;Syne&quot;, sans-serif"
+            >
+              Prêt à commander ?
+            </div>
+            <p class="text-sm mb-4" style="color: rgba(255, 255, 255, 0.6)">
+              Profitez des prochaines vagues pour optimiser vos délais et
+              tarifs.
+            </p>
+            <a href="contact.html" class="btn-primary justify-center w-full"
+              >📩 Demander un devis</a
+            >
+          </div>
+        </aside>
+      </div>
+
+      <!-- Order Waves -->
+      <div class="mt-16">
+        <div class="flex items-end justify-between mb-8">
+          <div>
+            <div class="section-tag">🌊 Vagues de commandes</div>
+            <h2 class="section-title">Prochaines vagues</h2>
+            <p class="section-sub">
+              Commandez avant les dates limites pour profiter des prochaines
+              expéditions groupées.
+            </p>
+          </div>
+        </div>
+        <div
+          class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          id="wavesList"
+        ></div>
+      </div>
+    </div>
+
+    <footer
+      class="mt-16 py-8 text-center text-xs"
+      style="color: #8c7b6b; border-top: 1px solid #e8ddd0"
+    >
+      © 2025 NAMM GLOBAL – Votre pont entre la Chine et l'Afrique
+    </footer>
+
+    <script src="assets/js/mockdata.js"></script>
+    <script src="assets/js/nav.js"></script>
+    <script src="assets/js/calendar.js"></script>
+  </body>
+</html>
