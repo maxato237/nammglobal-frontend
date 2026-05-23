@@ -28,12 +28,22 @@ function normalizePhone(raw) {
 /**
  * Retourne l'utilisateur connecté (session ou remember)
  */
-function getCurrentUser() {
+async function getCurrentUser() {
   try {
-    const session = sessionStorage.getItem(SESSION_KEY);
-    const remember = localStorage.getItem(REMEMBER_KEY);
-    const raw = session || remember;
-    return raw ? JSON.parse(raw) : null;
+    const accessToken = localStorage.getItem("accessToken");
+    
+    response = await fetch(`${apiUrl}/me`, {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    console.log(data);
+    
+    return data 
+    
   } catch {
     return null;
   }
@@ -53,16 +63,18 @@ async function loginUser(phone, password, remember = false) {
   const response = await fetch(`${apiUrl}/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ phone, password, remember }),
+    body: JSON.stringify({ "phone":phone, "password": password, "remember": remember }),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
+    console.log(errorData);
     return { ok: false, error: errorData.message || "Erreur de connexion." };
   }
 
   const result = await response.json();
-  return { ok: true, token: result.data.token };
+  
+  return { ok: true, token: result.data.accessToken };
 }
 
 /**
@@ -111,7 +123,9 @@ async function registerUser(data) {
   }
 
   const result = await response.json();
-  return { ok: true, token: result.data.token };
+  console.log(result);
+
+  return { ok: true, token: result.data.accessToken };
 }
 
 /**
@@ -190,6 +204,7 @@ async function adminExists() {
     return false;
   }
 }
+
 async function setupAdmin(data) {
   const adminUser = {
     name: data.name,
@@ -229,11 +244,54 @@ async function loginAdmin(phone, password) {
   return { ok: true };
 }
 
+async function _isTokenAlive(token) {
+  try {
+    const res = await fetch(`${apiUrl}/verify`, {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${token}` },
+    });
+
+    if (res.ok) return true;
+
+    if (res.status === 401) {
+      return await _tryRefresh();
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+async function _tryRefresh() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return false;
+
+  try {
+    const res = await fetch(`${apiUrl}/refresh`, {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${refreshToken}` },
+    });
+
+    if (!res.ok) return false;
+
+    const response = await res.json();
+    console.log(response.data);
+    
+    localStorage.setItem("accessToken", response.data.accessToken);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+
 function isAdminLoggedIn() {
   const token = localStorage.getItem("accessToken");
   if (!token) return false;
   return _isTokenAlive(token);
 }
+
 function logoutAdmin() {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");

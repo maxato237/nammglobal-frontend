@@ -68,6 +68,46 @@
         );
         min-height: 100vh;
       }
+
+      .phone-flag {
+        background: #f5f0e8;
+        border: 1.5px solid #e8ddd0;
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #5c5c6e;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .phone-input {
+        border-radius: 0 10px 10px 0 !important;
+        border-left: none !important;
+      }
+      .phone-input:focus {
+        border-color: #d62828 !important;
+        box-shadow: 0 0 0 3px rgba(214, 40, 40, 0.1) !important;
+      }
+      .toggle-pass {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #8c7b6b;
+        font-size: 16px;
+        padding: 4px;
+        transition: color 0.2s;
+      }
+      .toggle-pass:hover {
+        color: #d62828;
+      }
     </style>
   </head>
   <body style="padding-top: 0; background: #f5f0e8">
@@ -415,87 +455,137 @@
 
       function showAdminSetup() {
         document.getElementById("adminAuthScreen").innerHTML = `
-      <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
-        <div class="w-full max-w-md">
-          <div class="flex items-center justify-center gap-3 mb-8">
-            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
-                 style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
-            <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+    <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
+      <div class="w-full max-w-md">
+        <div class="flex items-center justify-center gap-3 mb-8">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
+               style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
+          <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+        </div>
+        <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
+          <div class="text-center mb-6">
+            <div class="text-4xl mb-3">🛡️</div>
+            <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Créer le compte admin</h2>
+            <p class="text-sm mt-1" style="color:#8C7B6B;">Première configuration – ce compte sera le seul administrateur.</p>
           </div>
-          <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
-            <div class="text-center mb-6">
-              <div class="text-4xl mb-3">🛡️</div>
-              <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Créer le compte admin</h2>
-              <p class="text-sm mt-1" style="color:#8C7B6B;">Première configuration – ce compte sera le seul administrateur.</p>
+          <div id="setupErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Nom complet *</label>
+              <input id="setupName" class="input" placeholder="Nom de l'administrateur">
             </div>
-            <div id="setupErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
-            <div class="space-y-4">
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Nom complet *</label>
-                <input id="setupName" class="input" placeholder="Nom de l'administrateur">
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Numéro de téléphone *</label>
+              <div class="flex">
+                <div class="phone-flag">
+                  <span>🌍</span>
+                  <select id="setupCountryCode"
+                          class="bg-transparent border-none outline-none text-xs font-semibold cursor-pointer"
+                          style="color:#5C5C6E;max-width:80px;">
+                    <option value="+237">🇨🇲 +237</option>
+                    <option value="+225">🇨🇮 +225</option>
+                    <option value="+221">🇸🇳 +221</option>
+                    <option value="+241">🇬🇦 +241</option>
+                    <option value="+242">🇨🇬 +242</option>
+                    <option value="+243">🇨🇩 +243</option>
+                    <option value="+223">🇲🇱 +223</option>
+                    <option value="+226">🇧🇫 +226</option>
+                    <option value="+227">🇳🇪 +227</option>
+                    <option value="+229">🇧🇯 +229</option>
+                    <option value="+228">🇹🇬 +228</option>
+                    <option value="+233">🇬🇭 +233</option>
+                    <option value="+234">🇳🇬 +234</option>
+                    <option value="+224">🇬🇳 +224</option>
+                  </select>
+                </div>
+                <input id="setupPhone" class="input phone-input flex-1" type="tel" placeholder="XXX XXX XXX">
               </div>
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Numéro de téléphone *</label>
-                <input id="setupPhone" class="input" type="tel" placeholder="+237 XXX XXX XXX">
-              </div>
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe *</label>
-                <input id="setupPass" class="input" type="password" placeholder="Min. 6 caractères">
-              </div>
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Confirmer le mot de passe *</label>
-                <input id="setupPass2" class="input" type="password" placeholder="Répétez">
-              </div>
-              <button onclick="doSetup()" class="btn-primary w-full justify-center" style="padding:13px;">
-                🛡️ Créer le compte admin
-              </button>
             </div>
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe *</label>
+              <input id="setupPass" class="input" type="password" placeholder="Min. 6 caractères">
+            </div>
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Confirmer le mot de passe *</label>
+              <input id="setupPass2" class="input" type="password" placeholder="Répétez">
+            </div>
+            <button onclick="doSetup()" class="btn-primary w-full justify-center" style="padding:13px;">
+              🛡️ Créer le compte admin
+            </button>
           </div>
         </div>
-      </div>`;
+      </div>
+    </div>`;
       }
 
       function showAdminLogin() {
         document.getElementById("adminAuthScreen").innerHTML = `
-      <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
-        <div class="w-full max-w-sm">
-          <div class="flex items-center justify-center gap-3 mb-8">
-            <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
-                 style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
-            <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+    <div class="auth-bg flex items-center justify-center min-h-screen px-4 py-10">
+      <div class="w-full max-w-sm">
+        <div class="flex items-center justify-center gap-3 mb-8">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg"
+               style="background:linear-gradient(135deg,#D62828,#E8A020);">NG</div>
+          <div class="font-black text-white text-lg" style="font-family:'Syne',sans-serif;">NAMM GLOBAL · Admin</div>
+        </div>
+        <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
+          <div class="text-center mb-6">
+            <div class="text-4xl mb-2">🔐</div>
+            <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Connexion Admin</h2>
           </div>
-          <div style="background:white;border-radius:28px;padding:32px;box-shadow:0 24px 80px rgba(0,0,0,0.25);">
-            <div class="text-center mb-6">
-              <div class="text-4xl mb-2">🔐</div>
-              <h2 class="text-xl font-black" style="font-family:'Syne',sans-serif;color:#1A1A2E;">Connexion Admin</h2>
-            </div>
-            <div id="loginErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
-            <div class="space-y-4">
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Téléphone</label>
-                <input id="adminPhone" class="input" type="tel" placeholder="+237 XXX XXX XXX">
-              </div>
-              <div>
-                <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe</label>
-                <input id="adminPass" class="input" type="password" placeholder="Votre mot de passe"
+          <div id="loginErr" class="hidden mb-4 p-3 rounded-xl text-sm" style="background:#FEE2E2;color:#D62828;"></div>
+          <div class="space-y-4">
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Téléphone</label>
+              <div class="flex">
+                <div class="phone-flag">
+                  <span>🌍</span>
+                  <select id="setupCountryCode"
+                          class="bg-transparent border-none outline-none text-xs font-semibold cursor-pointer"
+                          style="color:#5C5C6E;max-width:80px;">
+                    <option value="+237">🇨🇲 +237</option>
+                    <option value="+225">🇨🇮 +225</option>
+                    <option value="+221">🇸🇳 +221</option>
+                    <option value="+241">🇬🇦 +241</option>
+                    <option value="+242">🇨🇬 +242</option>
+                    <option value="+243">🇨🇩 +243</option>
+                    <option value="+223">🇲🇱 +223</option>
+                    <option value="+226">🇧🇫 +226</option>
+                    <option value="+227">🇳🇪 +227</option>
+                    <option value="+229">🇧🇯 +229</option>
+                    <option value="+228">🇹🇬 +228</option>
+                    <option value="+233">🇬🇭 +233</option>
+                    <option value="+234">🇳🇬 +234</option>
+                    <option value="+224">🇬🇳 +224</option>
+                  </select>
+                </div>
+                <input id="adminPhone" class="input phone-input flex-1" type="tel" placeholder="XXX XXX XXX"
                        onkeydown="if(event.key==='Enter')doAdminLogin()">
               </div>
-              <button onclick="doAdminLogin()" class="btn-primary w-full justify-center" style="padding:13px;">
-                🔐 Se connecter
-              </button>
             </div>
+            <div>
+              <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe</label>
+              <input id="adminPass" class="input" type="password" placeholder="Votre mot de passe"
+                     onkeydown="if(event.key==='Enter')doAdminLogin()">
+            </div>
+            <button onclick="doAdminLogin()" class="btn-primary w-full justify-center" style="padding:13px;">
+              🔐 Se connecter
+            </button>
           </div>
-          <p class="text-center mt-4 text-sm"><a href="index.html" style="color:rgba(255,255,255,0.5);">← Retour au site</a></p>
         </div>
-      </div>`;
+        <p class="text-center mt-4 text-sm"><a href="index.html" style="color:rgba(255,255,255,0.5);">← Retour au site</a></p>
+      </div>
+    </div>`;
       }
 
       async function doSetup() {
+        const countrySelect = document.getElementById("setupCountryCode").value;
         const name = document.getElementById("setupName")?.value.trim();
-        const phone = document.getElementById("setupPhone")?.value.trim();
+        const phoneLocal = document.getElementById("setupPhone")?.value.trim();
         const pass = document.getElementById("setupPass")?.value;
         const pass2 = document.getElementById("setupPass2")?.value;
         const err = document.getElementById("setupErr");
+
+        const phone = countrySelect + window.AUTH.normalizePhone(phoneLocal);
 
         if (!name || !phone || !pass) {
           err.textContent = "⚠️ Tous les champs sont obligatoires.";
@@ -517,7 +607,7 @@
           name,
           phone,
           password: pass,
-        });        
+        });
         localStorage.setItem("accessToken", result.accessToken);
         localStorage.setItem("refreshToken", result.refreshToken);
         document.getElementById("adminAuthScreen").innerHTML = "";
@@ -525,12 +615,15 @@
       }
 
       async function doAdminLogin() {
-        const phone = document.getElementById("adminPhone")?.value.trim();
         const pass = document.getElementById("adminPass")?.value;
         const err = document.getElementById("loginErr");
 
+        const countrySelect = document.getElementById("loginCountryCode").value;
+        const phoneLocal = document.getElementById("adminPhone")?.value.trim();
+        const phone = countrySelect + window.AUTH.normalizePhone(phoneLocal);
+
         const result = await window.AUTH.loginAdmin(phone, pass);
-        if (!result.ok) {          
+        if (!result.ok) {
           err.textContent = "⚠️ " + result.error;
           err.classList.remove("hidden");
           return;

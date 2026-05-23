@@ -6,7 +6,7 @@ function getCurrentPage() {
   return window.location.pathname.split('/').pop() || 'index.html';
 }
 
-function renderNav() {
+async function renderNav() {
   const current = getCurrentPage();
 
   const navLinks = [
@@ -21,7 +21,7 @@ function renderNav() {
   ];
 
   // ── Bloc auth (droite de la nav) ─────────────────────────
-  const user    = window.AUTH?.getCurrentUser?.() || null;
+  const user    = await window.AUTH?.getCurrentUser?.() || null;
   const authBtn = user
     ? /* Connecté – avatar + menu déroulant */ `
         <div class="relative" id="userMenuWrap">

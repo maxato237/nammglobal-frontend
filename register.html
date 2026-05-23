@@ -222,7 +222,7 @@
     </div>
   </div>
 
-  <script src="assets/js/auth.js"></script>
+  <script type="Module" src="assets/js/auth.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       window.AUTH.redirectIfLoggedIn('dashboard.html');
@@ -308,8 +308,8 @@
       btn.innerHTML = '⏳ Création du compte…';
       btn.disabled  = true;
 
-      setTimeout(() => {
-        const result = window.AUTH.registerUser(data);
+      setTimeout(async() => {
+        const result = await window.AUTH.registerUser(data);
 
         if (result.ok) {
           localStorage.setItem("accessToken", result.accessToken);

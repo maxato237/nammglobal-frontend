@@ -776,7 +776,7 @@
     </footer>
 
     <script src="assets/js/mockdata.js"></script>
-    <script src="assets/js/auth.js"></script>
+    <script type="module" src="assets/js/auth.js"></script>
     <script src="assets/js/store.js"></script>
     <script src="assets/js/nav.js"></script>
     <script src="assets/js/main.js"></script>
@@ -914,7 +914,9 @@
           // Build FormData (ready for Flask backend)
           const fd = new FormData(this);
           // Attach user info from session
-          const user = window.AUTH.getCurrentUser();
+          const user = await window.AUTH?.getCurrentUser();
+          console.log("yessss");
+          
           if (user) {
             fd.append("userId", user.id);
             fd.append("userName", user.name);
