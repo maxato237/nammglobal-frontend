@@ -22,7 +22,7 @@ const STATUS_COLOR = {
 
 // ── Init ──────────────────────────────────────────────────────
 async function initDashboard() {
-  const user = window.AUTH.getCurrentUser();
+  const user = await window.AUTH.getCurrentUser();
   if (!user) return;
 
   // Notifications bell
@@ -289,7 +289,7 @@ function _getWaveLabel(waveId) {
 // ── Accept / Reject / Pay ─────────────────────────────────────
 async function acceptQuote(orderId) {
   await window.STORE.orders.acceptQuote(orderId);
-  await loadOrders(window.AUTH.getCurrentUser());
+  await loadOrders(await window.AUTH.getCurrentUser());
   // Immediately show payment
   payOrder(orderId);
 }
@@ -305,10 +305,10 @@ async function rejectQuote(orderId) {
   // Remove from list after short delay
   setTimeout(async () => {
     await window.STORE.orders.delete(orderId);
-    await loadOrders(window.AUTH.getCurrentUser());
+    await loadOrders(await window.AUTH.getCurrentUser());
     renderStats();
   }, 1500);
-  await loadOrders(window.AUTH.getCurrentUser());
+  await loadOrders(await window.AUTH.getCurrentUser());
 }
 
 async function payOrder(orderId) {
@@ -322,7 +322,7 @@ async function payOrder(orderId) {
     if (result.success) {
       await window.STORE.orders.confirmPayment(orderId, result.ref);
       window.showToast?.('✅ Paiement confirmé ! Votre commande est lancée.', 'success');
-      await loadOrders(window.AUTH.getCurrentUser());
+      await loadOrders(await window.AUTH.getCurrentUser());
       renderStats();
     }
   } catch (e) {

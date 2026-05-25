@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditions d'utilisation – NAMM GLOBAL</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{brand:{red:'#D62828',gold:'#E8A020',dark:'#1A1A2E'}}}}}</script>
+  <style>
+    .toc-link {
+      display: block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #5C5C6E;
+      transition: background 0.2s, color 0.2s;
+    }
+    .toc-link:hover { background: #FEF3E2; color: #D62828; }
+    .toc-link.active { background: #FEF3E2; color: #D62828; font-weight: 600; }
+
+    .cgu-section { scroll-margin-top: 100px; }
+
+    .cgu-section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1A1A2E;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid #F5F0E8;
+    }
+    .cgu-section p, .cgu-section li {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #5C5C6E;
+      margin-bottom: 0.75rem;
+    }
+    .cgu-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .cgu-section ul li::before {
+      content: "→";
+      color: #D62828;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .highlight-box {
+      background: #FEF3E2;
+      border-left: 4px solid #E8A020;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 1rem 0;
+    }
+    .highlight-box p { margin: 0; color: #5C5C6E; font-size: 13px; }
+
+    .danger-box {
+      background: #FFF5F5;
+      border-left: 4px solid #D62828;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 1rem 0;
+    }
+    .danger-box p { margin: 0; color: #5C5C6E; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div id="nav-container"></div>
+
+  <!-- ── Hero ──────────────────────────────────────────────────── -->
+  <div style="background:linear-gradient(135deg,#1A1A2E 0%,#2d1b1b 60%,#1A1A2E 100%);padding:60px 0 40px;">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <div class="section-tag mx-auto mb-4" style="width:fit-content;background:rgba(232,160,32,0.15);color:#E8A020;border-color:rgba(232,160,32,0.3);">
+        📄 Documents légaux
+      </div>
+      <h1 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:white;margin-bottom:12px;">
+        Conditions Générales d'Utilisation
+      </h1>
+      <p style="color:#8C7B6B;font-size:14px;">
+        Dernière mise à jour : Mai 2025 · Version 1.0
+      </p>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-4 py-10">
+    <div class="lg:grid lg:grid-cols-4 lg:gap-10">
+
+      <!-- ── Sommaire (sticky sidebar) ─────────────────────────── -->
+      <aside class="hidden lg:block">
+        <div class="card p-5 sticky top-24">
+          <p style="font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:#1A1A2E;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">
+            Sommaire
+          </p>
+          <nav id="toc" class="space-y-1">
+            <a href="#art1" class="toc-link">1. Présentation</a>
+            <a href="#art2" class="toc-link">2. Acceptation des CGU</a>
+            <a href="#art3" class="toc-link">3. Inscription et compte</a>
+            <a href="#art4" class="toc-link">4. Services proposés</a>
+            <a href="#art5" class="toc-link">5. Processus de commande</a>
+            <a href="#art6" class="toc-link">6. Prix et paiement</a>
+            <a href="#art7" class="toc-link">7. Livraison et délais</a>
+            <a href="#art8" class="toc-link">8. Obligations de l'utilisateur</a>
+            <a href="#art9" class="toc-link">9. Responsabilités</a>
+            <a href="#art10" class="toc-link">10. Données personnelles</a>
+            <a href="#art11" class="toc-link">11. Communications</a>
+            <a href="#art12" class="toc-link">12. Propriété intellectuelle</a>
+            <a href="#art13" class="toc-link">13. Résiliation</a>
+            <a href="#art14" class="toc-link">14. Litiges</a>
+            <a href="#art15" class="toc-link">15. Contact</a>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- ── Contenu ──────────────────────────────────────────── -->
+      <main class="lg:col-span-3 space-y-10">
+
+        <!-- Art. 1 -->
+        <section id="art1" class="cgu-section card p-8">
+          <h2>Article 1 – Présentation de NAMM GLOBAL</h2>
+          <p>
+            NAMM GLOBAL est une plateforme d'intermédiation commerciale spécialisée dans
+            l'importation de produits depuis la Chine à destination des pays d'Afrique
+            subsaharienne, notamment le Cameroun.
+          </p>
+          <p>
+            Nous mettons en relation des acheteurs africains avec des fournisseurs chinois
+            sélectionnés, en prenant en charge la recherche de produits, la négociation,
+            le contrôle qualité, l'expédition et le suivi logistique.
+          </p>
+          <div class="highlight-box">
+            <p>
+              <strong>Siège :</strong> Cameroun · <strong>Email :</strong> contact@nammglobal.com ·
+              <strong>WhatsApp :</strong> +237 XXX XXX XXX
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 2 -->
+        <section id="art2" class="cgu-section card p-8">
+          <h2>Article 2 – Acceptation des conditions</h2>
+          <p>
+            L'utilisation de la plateforme NAMM GLOBAL implique l'acceptation pleine et
+            entière des présentes Conditions Générales d'Utilisation (CGU). Si vous n'acceptez
+            pas ces conditions, vous ne devez pas utiliser nos services.
+          </p>
+          <p>
+            En cochant la case « J'accepte les conditions d'utilisation » lors de votre
+            inscription, vous reconnaissez avoir lu, compris et accepté les présentes CGU.
+          </p>
+          <p>
+            NAMM GLOBAL se réserve le droit de modifier ces CGU à tout moment. Les utilisateurs
+            seront informés de toute modification substantielle par email ou WhatsApp.
+          </p>
+        </section>
+
+        <!-- Art. 3 -->
+        <section id="art3" class="cgu-section card p-8">
+          <h2>Article 3 – Inscription et compte utilisateur</h2>
+          <p>Pour accéder aux services de NAMM GLOBAL, vous devez créer un compte en fournissant :</p>
+          <ul>
+            <li>Votre nom complet</li>
+            <li>Un numéro de téléphone valide</li>
+            <li>Un mot de passe sécurisé (8 caractères minimum, majuscule, chiffre et caractère spécial)</li>
+            <li>Optionnellement : email, WhatsApp, pays et ville</li>
+          </ul>
+          <p>
+            Vous vous engagez à fournir des informations exactes, complètes et à jour.
+            Chaque compte est strictement personnel et ne peut être partagé.
+          </p>
+          <div class="danger-box">
+            <p>
+              <strong>Sécurité :</strong> Vous êtes seul responsable de la confidentialité de
+              votre mot de passe. Signalez immédiatement tout accès non autorisé à votre compte.
+            </p>
+          </div>
+          <p>
+            NAMM GLOBAL se réserve le droit de suspendre ou de supprimer tout compte dont les
+            informations s'avèrent inexactes ou frauduleuses.
+          </p>
+        </section>
+
+        <!-- Art. 4 -->
+        <section id="art4" class="cgu-section card p-8">
+          <h2>Article 4 – Services proposés</h2>
+          <p>NAMM GLOBAL offre les services suivants :</p>
+          <ul>
+            <li>Recherche et sourcing de produits auprès de fournisseurs chinois</li>
+            <li>Établissement de devis personnalisés sous 24 à 48 heures</li>
+            <li>Négociation des prix avec les fournisseurs</li>
+            <li>Contrôle qualité avant expédition</li>
+            <li>Gestion de l'expédition maritime ou aérienne</li>
+            <li>Suivi de commande en temps réel via la plateforme</li>
+            <li>Assistance client par WhatsApp, email et SMS</li>
+          </ul>
+          <div class="highlight-box">
+            <p>
+              Les services sont accessibles via notre plateforme web et peuvent évoluer.
+              NAMM GLOBAL se réserve le droit d'ajouter ou de retirer des fonctionnalités
+              sans préavis.
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 5 -->
+        <section id="art5" class="cgu-section card p-8">
+          <h2>Article 5 – Processus de commande</h2>
+          <p>Le parcours d'une commande sur NAMM GLOBAL se déroule comme suit :</p>
+          <ul>
+            <li>Soumission d'une demande (photo, lien ou description du produit)</li>
+            <li>Réception d'un devis détaillé incluant le prix produit, les frais de service et les frais de transport</li>
+            <li>Validation du devis et paiement de l'acompte</li>
+            <li>Passage de la commande auprès du fournisseur</li>
+            <li>Contrôle qualité et expédition</li>
+            <li>Suivi et livraison finale</li>
+          </ul>
+          <p>
+            Toute commande validée et payée est considérée comme ferme et définitive.
+            Les annulations après validation sont soumises aux conditions de l'article 9.
+          </p>
+        </section>
+
+        <!-- Art. 6 -->
+        <section id="art6" class="cgu-section card p-8">
+          <h2>Article 6 – Prix et paiement</h2>
+          <p>
+            Les prix affichés sur les devis comprennent le coût du produit, les frais de
+            service NAMM GLOBAL et les frais d'expédition estimés. Ils sont exprimés en
+            Francs CFA (XAF) ou en USD selon les cas.
+          </p>
+          <ul>
+            <li>Un acompte est exigé avant tout passage de commande</li>
+            <li>Le solde est dû à réception ou selon les modalités convenues</li>
+            <li>Les paiements sont acceptés via Mobile Money, virement bancaire ou autres moyens précisés sur la plateforme</li>
+            <li>Tout paiement est définitif sauf en cas de faute prouvée de NAMM GLOBAL</li>
+          </ul>
+          <div class="danger-box">
+            <p>
+              <strong>Attention :</strong> Les prix des devis sont valables pour une durée limitée
+              (généralement 48 heures). Passé ce délai, un nouveau devis peut être nécessaire en
+              raison des fluctuations du marché.
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 7 -->
+        <section id="art7" class="cgu-session card p-8">
+          <h2>Article 7 – Livraison et délais</h2>
+          <p>
+            Les délais de livraison sont donnés à titre indicatif et varient selon le mode
+            d'expédition choisi, la disponibilité du produit et les aléas logistiques.
+          </p>
+          <ul>
+            <li><strong>Voie maritime :</strong> 30 à 60 jours en moyenne</li>
+            <li><strong>Voie aérienne :</strong> 7 à 21 jours en moyenne</li>
+          </ul>
+          <p>
+            NAMM GLOBAL ne pourra être tenu responsable des retards causés par des événements
+            hors de son contrôle (grèves, blocages douaniers, intempéries, etc.).
+          </p>
+          <div class="highlight-box">
+            <p>
+              Un numéro de suivi vous sera communiqué dès l'expédition de votre marchandise.
+              Vous pourrez suivre l'avancement en temps réel depuis votre espace client.
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 8 -->
+        <section id="art8" class="cgu-section card p-8">
+          <h2>Article 8 – Obligations de l'utilisateur</h2>
+          <p>En utilisant les services de NAMM GLOBAL, vous vous engagez à :</p>
+          <ul>
+            <li>Fournir des informations exactes lors de toute demande ou commande</li>
+            <li>Ne pas commander de produits illicites, contrefaits ou prohibés</li>
+            <li>Respecter les lois et réglementations douanières de votre pays</li>
+            <li>Ne pas utiliser la plateforme à des fins frauduleuses ou malveillantes</li>
+            <li>Répondre rapidement aux demandes de précision de notre équipe</li>
+            <li>Ne pas tenter d'accéder aux comptes d'autres utilisateurs</li>
+          </ul>
+          <div class="danger-box">
+            <p>
+              Tout manquement grave à ces obligations peut entraîner la suspension immédiate
+              de votre compte sans remboursement des sommes déjà engagées.
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 9 -->
+        <section id="art9" class="cgu-section card p-8">
+          <h2>Article 9 – Responsabilités</h2>
+          <p>
+            NAMM GLOBAL agit en qualité d'intermédiaire entre l'acheteur et le fournisseur
+            chinois. À ce titre :
+          </p>
+          <ul>
+            <li>NAMM GLOBAL sélectionne les fournisseurs avec soin mais ne peut garantir une conformité parfaite dans 100 % des cas</li>
+            <li>En cas de produit non conforme, NAMM GLOBAL s'engage à trouver une solution amiable (remplacement, remboursement partiel)</li>
+            <li>Les pertes ou avaries pendant le transport sont couvertes selon le mode d'expédition et la souscription à une assurance</li>
+            <li>NAMM GLOBAL n'est pas responsable des délais de dédouanement dans le pays de destination</li>
+          </ul>
+          <div class="highlight-box">
+            <p>
+              Nous recommandons fortement de souscrire à une assurance transport pour les
+              commandes de valeur significative. Renseignez-vous auprès de notre équipe.
+            </p>
+          </div>
+        </section>
+
+        <!-- Art. 10 -->
+        <section id="art10" class="cgu-section card p-8">
+          <h2>Article 10 – Protection des données personnelles</h2>
+          <p>
+            NAMM GLOBAL collecte et traite vos données personnelles (nom, téléphone, email,
+            adresse IP) dans le cadre de la fourniture de ses services.
+          </p>
+          <ul>
+            <li>Vos données sont utilisées uniquement pour gérer votre compte et vos commandes</li>
+            <li>Elles ne sont jamais vendues à des tiers</li>
+            <li>Elles peuvent être partagées avec nos partenaires logistiques dans le strict cadre du traitement de votre commande</li>
+            <li>Vous disposez d'un droit d'accès, de rectification et de suppression de vos données sur simple demande</li>
+          </ul>
+          <p>
+            Pour exercer vos droits, contactez-nous à : <strong>privacy@nammglobal.com</strong>
+          </p>
+        </section>
+
+        <!-- Art. 11 -->
+        <section id="art11" class="cgu-section card p-8">
+          <h2>Article 11 – Communications</h2>
+          <p>
+            En créant un compte NAMM GLOBAL, vous consentez à être contacté via :
+          </p>
+          <ul>
+            <li><strong>WhatsApp</strong> : suivi de commande, devis, notifications importantes</li>
+            <li><strong>SMS</strong> : codes de vérification OTP, alertes urgentes</li>
+            <li><strong>Email</strong> : rapports, factures, communications commerciales</li>
+          </ul>
+          <p>
+            Vous pouvez à tout moment modifier vos préférences de communication depuis
+            votre espace client ou en contactant notre support.
+          </p>
+        </section>
+
+        <!-- Art. 12 -->
+        <section id="art12" class="cgu-section card p-8">
+          <h2>Article 12 – Propriété intellectuelle</h2>
+          <p>
+            L'ensemble des éléments de la plateforme NAMM GLOBAL (logo, design, textes,
+            code source) est la propriété exclusive de NAMM GLOBAL et est protégé par les
+            lois relatives à la propriété intellectuelle.
+          </p>
+          <p>
+            Toute reproduction, modification ou utilisation commerciale sans autorisation
+            écrite préalable est strictement interdite.
+          </p>
+        </section>
+
+        <!-- Art. 13 -->
+        <section id="art13" class="cgu-section card p-8">
+          <h2>Article 13 – Résiliation et suspension</h2>
+          <p>
+            NAMM GLOBAL peut suspendre ou résilier votre compte dans les cas suivants :
+          </p>
+          <ul>
+            <li>Violation des présentes CGU</li>
+            <li>Fourniture d'informations fausses</li>
+            <li>Comportement frauduleux ou abusif</li>
+            <li>Non-paiement des sommes dues</li>
+            <li>Sur demande expresse de l'utilisateur</li>
+          </ul>
+          <p>
+            L'utilisateur peut demander la suppression de son compte à tout moment en
+            contactant le support. Les commandes en cours seront traitées jusqu'à leur terme.
+          </p>
+        </section>
+
+        <!-- Art. 14 -->
+        <section id="art14" class="cgu-section card p-8">
+          <h2>Article 14 – Litiges et droit applicable</h2>
+          <p>
+            En cas de litige, NAMM GLOBAL et l'utilisateur s'engagent à rechercher en
+            premier lieu une solution amiable dans un délai de 30 jours.
+          </p>
+          <p>
+            À défaut d'accord amiable, le litige sera soumis aux juridictions compétentes
+            du Cameroun. Les présentes CGU sont régies par le droit camerounais et les
+            réglementations OHADA applicables.
+          </p>
+        </section>
+
+        <!-- Art. 15 -->
+        <section id="art15" class="cgu-section card p-8">
+          <h2>Article 15 – Contact</h2>
+          <p>Pour toute question relative aux présentes CGU :</p>
+          <ul>
+            <li>Email : <strong>legal@nammglobal.com</strong></li>
+            <li>WhatsApp : <strong>+237 XXX XXX XXX</strong></li>
+            <li>Formulaire de contact : <a href="contact.html" style="color:#D62828;font-weight:600;">nammglobal.com/contact</a></li>
+          </ul>
+        </section>
+
+        <!-- Back button -->
+        <div class="text-center pb-8">
+          <a href="register.html"
+             class="btn-primary inline-flex items-center gap-2"
+             style="padding:12px 28px;">
+            ← Retour à l'inscription
+          </a>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="assets/js/nav.js"></script>
+  <script>
+    // Highlight active TOC link on scroll
+    const sections = document.querySelectorAll('.cgu-section[id]');
+    const tocLinks = document.querySelectorAll('#toc a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`#toc a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>

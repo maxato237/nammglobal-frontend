@@ -503,7 +503,7 @@
             </div>
             <div>
               <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Mot de passe *</label>
-              <input id="setupPass" class="input" type="password" placeholder="Min. 6 caractères">
+              <input id="setupPass" class="input" type="password" placeholder="Min. 8 car., 1 chiffre, 1 spécial">
             </div>
             <div>
               <label class="text-xs font-bold block mb-1" style="color:#5C5C6E;">Confirmer le mot de passe *</label>
@@ -597,8 +597,9 @@
           err.classList.remove("hidden");
           return;
         }
-        if (pass.length < 6) {
-          err.textContent = "⚠️ Mot de passe trop court (min 6 caractères).";
+        const pwCheck = window.AUTH.validatePassword(pass);
+        if (!pwCheck.ok) {
+          err.textContent = "⚠️ " + pwCheck.error;
           err.classList.remove("hidden");
           return;
         }

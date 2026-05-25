@@ -347,13 +347,13 @@
             const result = await window.AUTH.loginUser(phone, password, remember);
 
             if (result.ok) {
-              localStorage.setItem("accessToken", result.token);
-              localStorage.setItem("refreshToken", result.token);
+              localStorage.setItem("accessToken", result.accessToken);
+              localStorage.setItem("refreshToken", result.refreshToken);
               btn.innerHTML = "✅ Connecté !";
               btn.style.background = "linear-gradient(135deg,#2D7D46,#1a5c32)";
               setTimeout(() => window.AUTH.redirectAfterLogin(), 600);
             } else {
-              showError("⚠️ Erreur de connexion " );
+              showError("⚠️ " + (result.error || "Erreur de connexion"));
               btn.innerHTML = "🔐 Se connecter";
               btn.disabled = false;
               // Secouer le formulaire

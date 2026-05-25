@@ -131,21 +131,18 @@
               <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Pays *</label>
               <select id="countryInput" class="input" required>
                 <option value="">Sélectionnez</option>
-                <option>Cameroun</option>
-                <option>Côte d'Ivoire</option>
-                <option>Sénégal</option>
-                <option>Gabon</option>
-                <option>Congo</option>
-                <option>RDC</option>
-                <option>Mali</option>
-                <option>Burkina Faso</option>
-                <option>Niger</option>
-                <option>Bénin</option>
-                <option>Togo</option>
-                <option>Ghana</option>
-                <option>Nigeria</option>
-                <option>Guinée</option>
-                <option>Autres</option>
+                <option value="CM">Cameroun</option>
+                <option value="CI">Côte d'Ivoire</option>
+                <option value="SN">Sénégal</option>
+                <option value="GA">Gabon</option>
+                <option value="CG">Congo</option>
+                <option value="CD">RDC</option>
+                <option value="ML">Mali</option>
+                <option value="BF">Burkina Faso</option>
+                <option value="BJ">Bénin</option>
+                <option value="TG">Togo</option>
+                <option value="GH">Ghana</option>
+                <option value="NG">Nigeria</option>
               </select>
             </div>
             <div>
@@ -156,7 +153,7 @@
 
           <!-- Mot de passe -->
           <div>
-            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Mot de passe * <span class="font-normal" style="color:#8C7B6B;">(min. 6 caractères)</span></label>
+            <label class="text-xs font-bold block mb-1.5" style="color:#5C5C6E;">Mot de passe * <span class="font-normal" style="color:#8C7B6B;">(min. 8 car., 1 chiffre, 1 spécial)</span></label>
             <div class="relative">
               <input id="passwordInput" type="password" class="input w-full"
                      placeholder="Choisissez un mot de passe sécurisé"
@@ -194,7 +191,13 @@
           <div class="flex items-start gap-3">
             <input type="checkbox" id="cguCheck" required class="mt-1 flex-shrink-0">
             <label for="cguCheck" class="text-xs" style="color:#8C7B6B;">
-              En créant un compte, j'accepte les conditions d'utilisation de NAMM GLOBAL et consens à être contacté par WhatsApp, email ou SMS.
+              En créant un compte, j'accepte les
+              <a href="conditions-utilisation.html" target="_blank"
+                 style="color:#D62828;font-weight:600;text-decoration:underline;"
+                 onclick="event.stopPropagation();">
+                conditions d'utilisation
+              </a>
+              de NAMM GLOBAL et consens à être contacté par WhatsApp, email ou SMS.
             </label>
           </div>
 

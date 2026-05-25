@@ -123,12 +123,13 @@
   </footer>
 
   <script src="assets/js/mockdata.js"></script>
-  <script src="assets/js/auth.js"></script>
+  <script type="module" src="assets/js/auth.js"></script>
   <script src="assets/js/store.js"></script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/main.js"></script>
   <script>
-    window.AUTH.requireAuth('login.html');
+    // auth.js est un module (différé) : on attend DOMContentLoaded pour que window.AUTH soit prêt
+    document.addEventListener('DOMContentLoaded', () => window.AUTH.requireAuth('login.html'));
 
     function toggleVis(id, btn) {
       const inp = document.getElementById(id);
@@ -141,8 +142,8 @@
       return (name || '?').trim().split(' ').map(w => w[0]?.toUpperCase() || '').slice(0, 2).join('');
     }
 
-    function loadProfileForm() {
-      const user = window.AUTH.getCurrentUser();
+    async function loadProfileForm() {
+      const user = await window.AUTH.getCurrentUser();
       if (!user) return;
 
       // Avatar
@@ -183,7 +184,7 @@
       btn.innerHTML = '⏳ Enregistrement…';
       btn.disabled  = true;
 
-      const user     = window.AUTH.getCurrentUser();
+      const user     = await window.AUTH.getCurrentUser();
       const firstName = document.getElementById('pFirstName').value.trim();
       const lastName  = document.getElementById('pLastName').value.trim();
       const email     = document.getElementById('pEmail').value.trim();
@@ -200,9 +201,12 @@
         showErr('Les mots de passe ne correspondent pas.');
         btn.innerHTML = orig; btn.disabled = false; return;
       }
-      if (newPass && newPass.length < 6) {
-        showErr('Le mot de passe doit contenir au moins 6 caractères.');
-        btn.innerHTML = orig; btn.disabled = false; return;
+      if (newPass) {
+        const pwCheck = window.AUTH.validatePassword(newPass);
+        if (!pwCheck.ok) {
+          showErr(pwCheck.error);
+          btn.innerHTML = orig; btn.disabled = false; return;
+        }
       }
 
       const name    = [firstName, lastName].filter(Boolean).join(' ');

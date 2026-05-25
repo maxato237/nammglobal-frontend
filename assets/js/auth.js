@@ -14,6 +14,17 @@ const apiUrl = "http://127.0.0.1:5000/api/auth";
 // ── Helpers ──────────────────────────────────────────────────
 
 /**
+ * Valide un mot de passe selon la règle backend : min 8 caractères, 1 chiffre, 1 caractère spécial.
+ * @returns {{ok:boolean, error?:string}}
+ */
+function validatePassword(p) {
+  if (!p || p.length < 8) return { ok: false, error: "Le mot de passe doit contenir au moins 8 caractères." };
+  if (!/\d/.test(p))      return { ok: false, error: "Le mot de passe doit contenir au moins un chiffre." };
+  if (!/[^A-Za-z0-9]/.test(p)) return { ok: false, error: "Le mot de passe doit contenir au moins un caractère spécial." };
+  return { ok: true };
+}
+
+/**
  * Normalise un numéro : retire espaces, tirets, +, indicatifs courants
  */
 function normalizePhone(raw) {
@@ -26,66 +37,94 @@ function normalizePhone(raw) {
 }
 
 /**
- * Retourne l'utilisateur connecté (session ou remember)
+ * Retourne l'objet utilisateur connecté, ou null.
+ * Tente un refresh automatique si l'access token est expiré (401).
  */
 async function getCurrentUser() {
+  let accessToken = localStorage.getItem("accessToken");
+  if (!accessToken) return null;
+
   try {
-    const accessToken = localStorage.getItem("accessToken");
-    
-    response = await fetch(`${apiUrl}/me`, {
+    let response = await fetch(`${apiUrl}/me`, {
       method: "GET",
       headers: { "Authorization": `Bearer ${accessToken}` },
     });
 
+    // Access token expiré → tenter un refresh puis réessayer une fois
+    if (response.status === 401) {
+      const refreshed = await _tryRefresh();
+      if (!refreshed) return null;
+      accessToken = localStorage.getItem("accessToken");
+      response = await fetch(`${apiUrl}/me`, {
+        method: "GET",
+        headers: { "Authorization": `Bearer ${accessToken}` },
+      });
+    }
+
     if (!response.ok) return null;
 
     const data = await response.json();
-    console.log(data);
-    
-    return data 
-    
+    const u = data.data;        // déballe l'enveloppe { success, message, data }
+    if (!u) return null;
+
+    // Normalisation : alias des champs backend (camelCase) vers les noms
+    // attendus par le front (nav.js, dashboard.js, profile.html…)
+    return {
+      ...u,
+      name:    u.fullName ?? "",
+      avatar:  u.initials ?? "",      // initiales affichées comme texte (ex. "MD")
+      avatarUrl: u.avatarUrl ?? null, // URL image conservée à part si besoin
+      country: u.countryCode ?? "",
+      joined:  u.createdAt ?? null,
+    };
   } catch {
     return null;
   }
 }
 
 /**
- * Vérifie si l'utilisateur est connecté
+ * Vérifie si l'utilisateur est connecté (asynchrone).
  */
-function isLoggedIn() {
-  return getCurrentUser() !== null;
+async function isLoggedIn() {
+  const user = await getCurrentUser();
+  return user !== null;
 }
 
 /**
  * Connecte un utilisateur
  */
 async function loginUser(phone, password, remember = false) {
-  const response = await fetch(`${apiUrl}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ "phone":phone, "password": password, "remember": remember }),
-  });
+  try {
+    const response = await fetch(`${apiUrl}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, password, remember }),
+    });
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.log(errorData);
-    return { ok: false, error: errorData.message || "Erreur de connexion." };
+    const result = await response.json();
+
+    if (!response.ok) {
+      return { ok: false, error: result.message || "Erreur de connexion." };
+    }
+
+    return {
+      ok: true,
+      accessToken: result.data.accessToken,
+      refreshToken: result.data.refreshToken,
+      user: result.data,
+    };
+  } catch (e) {
+    return { ok: false, error: "Impossible de joindre le serveur (réseau/CORS)." };
   }
-
-  const result = await response.json();
-  
-  return { ok: true, token: result.data.accessToken };
 }
 
 /**
  * Inscrit un nouvel utilisateur (mock)
  */
 async function registerUser(data) {
-  if (data.password.length < 6) {
-    return {
-      ok: false,
-      error: "Le mot de passe doit contenir au moins 6 caractères.",
-    };
+  const pwCheck = validatePassword(data.password);
+  if (!pwCheck.ok) {
+    return { ok: false, error: pwCheck.error };
   }
   if (data.password !== data.passwordConfirm) {
     return { ok: false, error: "Les mots de passe ne correspondent pas." };
@@ -109,39 +148,69 @@ async function registerUser(data) {
     avatar: initials,
   };
 
-  const response = await fetch(`${apiUrl}/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(newUser),
-  });
+  try {
+    const response = await fetch(`${apiUrl}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newUser),
+    });
 
-  if (!response.ok) {
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        ok: false,
+        error: result.message || "Erreur lors de l'inscription. Veuillez réessayer.",
+      };
+    }
+
     return {
-      ok: false,
-      error: "Erreur lors de l'inscription. Veuillez réessayer.",
+      ok: true,
+      accessToken: result.data.accessToken,
+      refreshToken: result.data.refreshToken,
+      user: result.data,
     };
+  } catch (e) {
+    return { ok: false, error: "Impossible de joindre le serveur (réseau/CORS)." };
   }
-
-  const result = await response.json();
-  console.log(result);
-
-  return { ok: true, token: result.data.accessToken };
 }
 
 /**
- * Déconnexion
+ * Déconnexion — blackliste l'access token et révoque le refresh token côté serveur
  */
-function logoutUser() {
+async function logoutUser() {
+  const accessToken = localStorage.getItem("accessToken");
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  try {
+    if (accessToken) {
+      await fetch(`${apiUrl}/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ refreshToken }),
+      });
+    }
+  } catch (e) {
+    // Erreur réseau : on purge quand même le localStorage
+    console.warn("Logout backend échoué, purge locale.", e);
+  }
+
+  localStorage.removeItem("accessToken");
+  localStorage.removeItem("refreshToken");
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(REMEMBER_KEY);
   window.location.href = "login.html";
 }
 
 /**
- * Garde la page : redirige vers login si non connecté
+ * Garde la page : redirige vers login si non connecté (asynchrone).
  */
-function requireAuth(redirectTo = "login.html") {
-  if (!isLoggedIn()) {
+async function requireAuth(redirectTo = "login.html") {
+  const logged = await isLoggedIn();
+  if (!logged) {
     // Sauvegarder la page demandée pour rediriger après connexion
     sessionStorage.setItem(
       "namm_redirect",
@@ -152,10 +221,11 @@ function requireAuth(redirectTo = "login.html") {
 }
 
 /**
- * Redirige si déjà connecté (depuis login/register)
+ * Redirige si déjà connecté (depuis login/register) (asynchrone).
  */
-function redirectIfLoggedIn(to = "dashboard.html") {
-  if (isLoggedIn()) window.location.href = to;
+async function redirectIfLoggedIn(to = "dashboard.html") {
+  const logged = await isLoggedIn();
+  if (logged) window.location.href = to;
 }
 
 /**
@@ -165,6 +235,73 @@ function redirectAfterLogin() {
   const target = sessionStorage.getItem("namm_redirect") || "dashboard.html";
   sessionStorage.removeItem("namm_redirect");
   window.location.href = target;
+}
+
+// ══════════════════════════════════════════════════════════
+//  RÉINITIALISATION DU MOT DE PASSE (OTP)
+// ══════════════════════════════════════════════════════════
+
+/**
+ * Étape 1 — Demande un OTP envoyé par SMS/WhatsApp.
+ * @returns {Promise<{ok:boolean, tokenId?:number, error?:string}>}
+ */
+async function requestPasswordReset(phone, channel = "sms") {
+  try {
+    const response = await fetch(`${apiUrl}/password/reset/request`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ phone, channel }),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      return { ok: false, error: result.message || "Échec de l'envoi du code." };
+    }
+    return { ok: true, tokenId: result.data?.tokenId };
+  } catch (e) {
+    return { ok: false, error: "Erreur réseau. Réessayez." };
+  }
+}
+
+/**
+ * Étape 2 — Vérifie l'OTP (6 chiffres) et récupère un resetToken à usage unique.
+ * @returns {Promise<{ok:boolean, resetToken?:string, error?:string}>}
+ */
+async function verifyResetOtp(tokenId, otp) {
+  try {
+    const response = await fetch(`${apiUrl}/password/reset/verify-otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tokenId, otp }),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      return { ok: false, error: result.message || "Code invalide ou expiré." };
+    }
+    return { ok: true, resetToken: result.data?.resetToken };
+  } catch (e) {
+    return { ok: false, error: "Erreur réseau. Réessayez." };
+  }
+}
+
+/**
+ * Étape 3 — Applique le nouveau mot de passe via le resetToken.
+ * @returns {Promise<{ok:boolean, error?:string}>}
+ */
+async function confirmPasswordReset(resetToken, newPassword) {
+  try {
+    const response = await fetch(`${apiUrl}/password/reset/confirm`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ resetToken, newPassword }),
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      return { ok: false, error: result.message || "Échec de la réinitialisation." };
+    }
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: "Erreur réseau. Réessayez." };
+  }
 }
 
 // ══════════════════════════════════════════════════════════
@@ -309,6 +446,10 @@ window.AUTH = {
   redirectIfLoggedIn,
   redirectAfterLogin,
   normalizePhone,
+  validatePassword,
+  requestPasswordReset,
+  verifyResetOtp,
+  confirmPasswordReset,
   setupAdmin,
   loginAdmin,
   isAdminLoggedIn,
